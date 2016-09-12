@@ -7,6 +7,10 @@ repositories {
     mavenCentral()
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.0'
+}
+
 dependencies {
     compile 'org.jetbrains:annotations:15.0'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.6.2'
