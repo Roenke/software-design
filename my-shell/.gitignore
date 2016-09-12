@@ -1,11 +1,1 @@
-*.iws
-*.ipr
-.idea/
-.gradle/
-logs/
-local.properties
-
-*/build/
-
-*~
-*.swp
+build/
