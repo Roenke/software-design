@@ -1,15 +1,14 @@
 package com.spbau.bibaev.software.desing.shell.command;
 
 
-import com.spbau.bibaev.software.desing.shell.Executable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public abstract class CommandBase implements Executable {
-  protected final List<CommandArg> ourArgs;
+  protected final List<String> ourArgs;
 
-  protected CommandBase(@NotNull List<CommandArg> args) {
+  protected CommandBase(@NotNull List<String> args) {
     ourArgs = args;
   }
 }

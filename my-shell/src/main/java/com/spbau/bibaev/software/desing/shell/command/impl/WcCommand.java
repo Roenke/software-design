@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class WcCommand extends CommandBase {
-  public WcCommand(@NotNull List<CommandArg> args) {
+  public WcCommand(@NotNull List<String> args) {
     super(args);
   }
 

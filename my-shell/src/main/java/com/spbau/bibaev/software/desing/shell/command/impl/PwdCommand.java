@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.List;
 
 public class PwdCommand extends CommandBase {
-  public PwdCommand(@NotNull List<CommandArg> args) {
+  public PwdCommand(@NotNull List<String> args) {
     super(args);
   }
 

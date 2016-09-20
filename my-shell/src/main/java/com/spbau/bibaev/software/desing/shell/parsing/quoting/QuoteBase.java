@@ -15,6 +15,12 @@ public abstract class QuoteBase implements Quote {
   }
 
   @NotNull
+  public static Quote makeQuote(@NotNull String text) {
+    // TODO: implement it
+    return new StrongQuote(text, 0, text.length());
+  }
+
+  @NotNull
   public String substitute(@NotNull Environment environment) {
     return substitute(getBody(), environment);
   }

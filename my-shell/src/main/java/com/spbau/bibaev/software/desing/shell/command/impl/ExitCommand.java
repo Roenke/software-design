@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.List;
 
 public class ExitCommand extends CommandBase {
-  public ExitCommand(@NotNull List<CommandArg> args) {
+  public ExitCommand(@NotNull List<String> args) {
     super(args);
   }
 

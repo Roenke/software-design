@@ -1,5 +1,6 @@
 package com.spbau.bibaev.software.desing.shell;
 
+import com.spbau.bibaev.software.desing.shell.command.Executable;
 import com.spbau.bibaev.software.desing.shell.ex.CommandCreationException;
 import com.spbau.bibaev.software.desing.shell.ex.EmptyCommandException;
 import com.spbau.bibaev.software.desing.shell.parsing.CommandParser;

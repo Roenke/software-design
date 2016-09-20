@@ -15,7 +15,7 @@ public class CommandListParser {
   private static final char WEAK_QUOTE = '"';
 
   @NotNull
-  public static List<String> parse(@NotNull String input) {
+  static List<String> parse(@NotNull String input) {
     List<String> result = new ArrayList<>();
     final List<QuoteBase> quotes = findQuotes(input);
     List<String> commands = splitByPipe(input, quotes);

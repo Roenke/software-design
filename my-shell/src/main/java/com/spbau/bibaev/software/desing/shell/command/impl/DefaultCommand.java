@@ -9,7 +9,7 @@ import java.io.*;
 import java.util.List;
 
 public class DefaultCommand extends CommandBase {
-  public DefaultCommand(@NotNull List<CommandArg> args) {
+  public DefaultCommand(@NotNull List<String> args) {
     super(args);
   }
 

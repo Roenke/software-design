@@ -10,14 +10,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class EchoCommand extends CommandBase {
-  public EchoCommand(@NotNull List<CommandArg> args) {
+  public EchoCommand(@NotNull List<String> args) {
     super(args);
   }
 
   @NotNull
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
-    final String output = ourArgs.stream().map(CommandArg::getValue).collect(Collectors.joining(" "));
+    final String output = ourArgs.stream().collect(Collectors.joining(" "));
     out.write(output.getBytes());
     out.write(System.lineSeparator().getBytes());
     return ExecutionResult.CONTINUE;

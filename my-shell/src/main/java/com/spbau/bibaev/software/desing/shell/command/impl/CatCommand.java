@@ -1,18 +1,20 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
 import com.spbau.bibaev.software.desing.shell.ExecutionResult;
-import com.spbau.bibaev.software.desing.shell.command.CommandArg;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.List;
 
 public class CatCommand extends CommandBase {
   private static final int BUFFER_SIZE = 4096;
 
-  public CatCommand(@NotNull List<CommandArg> args) {
+  public CatCommand(@NotNull List<String> args) {
     super(args);
   }
 
@@ -20,7 +22,7 @@ public class CatCommand extends CommandBase {
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     if (ourArgs.size() > 1) {
-      String filename = ourArgs.get(1).getValue();
+      String filename = ourArgs.get(0);
       File file = new File(filename);
       if(!file.exists()) {
         err.write(String.format("File %s not found", filename).getBytes());
