@@ -1,40 +1,42 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
+import com.spbau.bibaev.software.desing.shell.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandArg;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
 import java.util.List;
 
 public class CatCommand extends CommandBase {
-  private static final Logger LOG = LogManager.getLogger(CatCommand.class);
+  private static final int BUFFER_SIZE = 4096;
 
   public CatCommand(@NotNull List<CommandArg> args) {
     super(args);
   }
 
+  @NotNull
   @Override
-  public void perform(@NotNull BufferedReader reader, @NotNull BufferedWriter writer) throws IOException {
+  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     if (ourArgs.size() > 1) {
-      CommandArg filename = ourArgs.get(1);
-      BufferedReader fileReader = new BufferedReader(new FileReader(filename.getValue()));
-      performImpl(fileReader, writer);
+      String filename = ourArgs.get(1).getValue();
+      File file = new File(filename);
+      if(!file.exists()) {
+        err.write(String.format("File %s not found", filename).getBytes());
+      }
+      Files.copy(file.toPath(), out);
     }
 
-    performImpl(reader, writer);
+    copyStream(in, out);
+    return ExecutionResult.CONTINUE;
   }
 
-  private void performImpl(@NotNull BufferedReader reader, @NotNull BufferedWriter writer) throws IOException {
-    for (String line : (Iterable<String>) reader.lines()::iterator) {
-      writer.write(line);
-      writer.newLine();
-      writer.flush();
+  private void copyStream(@NotNull InputStream in, @NotNull OutputStream os) throws IOException {
+    byte[] buffer = new byte[BUFFER_SIZE];
+    int read = in.read(buffer);
+    while(read > 0) {
+      os.write(buffer);
     }
   }
 }

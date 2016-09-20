@@ -3,7 +3,7 @@ package com.spbau.bibaev.software.desing.shell.parsing.quoting;
 import com.spbau.bibaev.software.desing.shell.Environment;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class QuoteBase {
+public abstract class QuoteBase implements Quote {
   private final String myString;
   private final int myBegin;
   private final int myEnd;

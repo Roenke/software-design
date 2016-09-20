@@ -1,12 +1,11 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
+import com.spbau.bibaev.software.desing.shell.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandArg;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 public class DefaultCommand extends CommandBase {
@@ -14,8 +13,9 @@ public class DefaultCommand extends CommandBase {
     super(args);
   }
 
+  @NotNull
   @Override
-  public void perform(@NotNull BufferedReader reader, @NotNull BufferedWriter writer) throws IOException {
-
+  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
+    return ExecutionResult.CONTINUE;
   }
 }

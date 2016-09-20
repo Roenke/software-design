@@ -1,10 +1,14 @@
 package com.spbau.bibaev.software.desing.shell.pipe;
 
 import com.spbau.bibaev.software.desing.shell.Executable;
-import org.apache.logging.log4j.core.util.StringBuilderWriter;
+import com.spbau.bibaev.software.desing.shell.ExecutionResult;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PipeHandler implements Executable {
   private final Executable myLeftExecutable;
@@ -15,12 +19,30 @@ public class PipeHandler implements Executable {
     myRightExecutable = right;
   }
 
+  @NotNull
   @Override
-  public void perform(@NotNull BufferedReader reader, @NotNull BufferedWriter writer) throws IOException {
-    StringBuilder sb = new StringBuilder();
-    BufferedWriter writer1 = new BufferedWriter(new StringBuilderWriter(sb));
-    myLeftExecutable.perform(reader, writer1);
-    BufferedReader reader1 = new BufferedReader(new StringReader(sb.toString()));
-    myRightExecutable.perform(reader1, writer);
+  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
+    List<Integer> buffer = new ArrayList<>();
+    OutputStream o = new OutputStream() {
+      @Override
+      public void write(int b) throws IOException {
+        buffer.add(b);
+      }
+    };
+
+    ExecutionResult firstResult = myLeftExecutable.perform(in, o, err);
+    if(firstResult == ExecutionResult.SHUTDOWN) {
+      return ExecutionResult.SHUTDOWN;
+    }
+
+    InputStream is = new InputStream() {
+      private int pos = 0;
+      @Override
+      public int read() throws IOException {
+        return pos < buffer.size() ? buffer.get(pos++) : -1;
+      }
+    };
+
+    return myRightExecutable.perform(is, out, err);
   }
 }
