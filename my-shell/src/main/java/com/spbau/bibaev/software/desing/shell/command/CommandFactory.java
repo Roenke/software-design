@@ -3,6 +3,7 @@ package com.spbau.bibaev.software.desing.shell.command;
 import com.spbau.bibaev.software.desing.shell.command.impl.*;
 import com.spbau.bibaev.software.desing.shell.command.impl.todo.AssignCommand;
 import com.spbau.bibaev.software.desing.shell.ex.CommandCreationException;
+import com.spbau.bibaev.software.desing.shell.parsing.quoting.StrongQuote;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.InvocationTargetException;
@@ -37,14 +38,14 @@ public class CommandFactory {
   public Executable createCommand(@NotNull String name, @NotNull List<String> args) throws CommandCreationException {
     try {
       if (COMMANDS.containsKey(name)) {
-        return COMMANDS.get(name).getConstructor(List.class).newInstance(args);
+        return COMMANDS.get(name).getConstructor(String.class, List.class).newInstance(name, args);
       }
 
       if (args.size() == 0 && AssignCommand.isAssignExpression(name)) {
-        return AssignCommand.class.getConstructor(List.class).newInstance(args);
+        return AssignCommand.class.getConstructor(String.class, List.class).newInstance(name, args);
       }
 
-      return DEFAULT_COMMAND_CLASS.getConstructor(List.class).newInstance(args);
+      return DEFAULT_COMMAND_CLASS.getConstructor(String.class, List.class).newInstance(name, args);
     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
       throw new CommandCreationException("Cannot create command " + name, e);
     }

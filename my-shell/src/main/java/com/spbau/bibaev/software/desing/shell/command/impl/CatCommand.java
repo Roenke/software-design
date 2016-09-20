@@ -14,8 +14,8 @@ import java.util.List;
 public class CatCommand extends CommandBase {
   private static final int BUFFER_SIZE = 4096;
 
-  public CatCommand(@NotNull List<String> args) {
-    super(args);
+  public CatCommand(@NotNull String name, @NotNull List<String> args) {
+    super(name, args);
   }
 
   @NotNull

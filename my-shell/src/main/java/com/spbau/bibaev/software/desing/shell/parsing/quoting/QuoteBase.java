@@ -44,7 +44,7 @@ public abstract class QuoteBase implements Quote {
   @NotNull
   private String getBody() {
     if(myBody == null) {
-      myBody = myString.substring(myBegin + 1, myEnd);
+      myBody = myString.substring(myBegin /* + 1*/, myEnd);
     }
 
     return myBody;

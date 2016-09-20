@@ -1,7 +1,6 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
 import com.spbau.bibaev.software.desing.shell.ExecutionResult;
-import com.spbau.bibaev.software.desing.shell.command.CommandArg;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
 import com.spbau.bibaev.software.desing.shell.util.TextUtil;
 import org.jetbrains.annotations.NotNull;
@@ -11,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class WcCommand extends CommandBase {
-  public WcCommand(@NotNull List<String> args) {
-    super(args);
+  public WcCommand(@NotNull String name, @NotNull List<String> args) {
+    super(name, args);
   }
 
   @NotNull

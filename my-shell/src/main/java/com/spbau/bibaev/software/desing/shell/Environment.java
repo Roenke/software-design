@@ -21,7 +21,11 @@ public class Environment {
 
   @NotNull
   public String getVariableValue(@NotNull String variable) {
-    return myVariables.getOrDefault(variable, "");
+    if(myVariables.containsKey(variable)) {
+      return myVariables.get(variable);
+    }
+
+    return System.getenv().getOrDefault(variable, "");
   }
 
   public void putVariableValue(@NotNull String variable, @NotNull String value) {
