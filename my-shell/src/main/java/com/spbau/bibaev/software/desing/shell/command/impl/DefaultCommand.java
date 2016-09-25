@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultCommand extends CommandBase {
+  private static byte[] BUFFER = new byte[4096];
   public DefaultCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
   }
@@ -19,14 +20,22 @@ public class DefaultCommand extends CommandBase {
     List<String> command = new ArrayList<>(ourArgs);
     command.add(0, ourName);
     ProcessBuilder pb = new ProcessBuilder(command);
-
     pb.redirectError(ProcessBuilder.Redirect.PIPE)
         .redirectInput(ProcessBuilder.Redirect.PIPE)
         .redirectOutput(ProcessBuilder.Redirect.PIPE);
 
     final Process start = pb.start();
-    final int read = start.getInputStream().read();
+    InputStream inputStream = start.getInputStream();
+    pipe(inputStream, out);
 
     return ExecutionResult.CONTINUE;
+  }
+
+  private static void pipe(@NotNull InputStream inputStream, @NotNull OutputStream outputStream) throws IOException {
+    int readCount = inputStream.read(BUFFER);
+    while(readCount != -1) {
+      outputStream.write(BUFFER, 0, readCount);
+      readCount = inputStream.read(BUFFER);
+    }
   }
 }

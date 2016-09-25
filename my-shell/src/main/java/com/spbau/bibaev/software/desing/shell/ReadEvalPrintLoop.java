@@ -20,6 +20,10 @@ class ReadEvalPrintLoop {
     while (result != ExecutionResult.SHUTDOWN) {
       try {
         final String userInput = consoleReader.readLine();
+        if(userInput.trim().isEmpty()) {
+          continue;
+        }
+
         final Executable command = CommandParser.parse(userInput);
         result = command.perform(System.in, System.out, System.err);
       } catch (IOException e) {
