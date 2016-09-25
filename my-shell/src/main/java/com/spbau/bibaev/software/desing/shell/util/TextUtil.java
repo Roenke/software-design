@@ -7,7 +7,7 @@ public class TextUtil {
     return str.split("\\s+").length;
   }
   public static boolean isIdentifier(@NotNull String value) {
-    if(value.isEmpty() || Character.isLetter(value.charAt(0))) {
+    if(value.isEmpty() || !Character.isLetter(value.charAt(0))) {
       return false;
     }
 
