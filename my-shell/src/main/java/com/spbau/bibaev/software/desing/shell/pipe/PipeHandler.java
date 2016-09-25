@@ -23,19 +23,19 @@ public class PipeHandler implements Executable {
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     List<Integer> buffer = new ArrayList<>();
-    OutputStream o = new OutputStream() {
+    OutputStream outputStream = new OutputStream() {
       @Override
       public void write(int b) throws IOException {
         buffer.add(b);
       }
     };
 
-    ExecutionResult firstResult = myLeftExecutable.perform(in, o, err);
+    ExecutionResult firstResult = myLeftExecutable.perform(in, outputStream, err);
     if(firstResult == ExecutionResult.SHUTDOWN) {
       return ExecutionResult.SHUTDOWN;
     }
 
-    InputStream is = new InputStream() {
+    InputStream inputStream = new InputStream() {
       private int pos = 0;
       @Override
       public int read() throws IOException {
@@ -43,6 +43,6 @@ public class PipeHandler implements Executable {
       }
     };
 
-    return myRightExecutable.perform(is, out, err);
+    return myRightExecutable.perform(inputStream, out, err);
   }
 }

@@ -1,4 +1,4 @@
-package com.spbau.bibaev.software.desing.shell.command.impl.todo;
+package com.spbau.bibaev.software.desing.shell.command.impl;
 
 import com.spbau.bibaev.software.desing.shell.Environment;
 import com.spbau.bibaev.software.desing.shell.ExecutionResult;

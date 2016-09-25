@@ -3,14 +3,16 @@ package com.spbau.bibaev.software.desing.shell.parsing.quoting;
 import com.spbau.bibaev.software.desing.shell.Environment;
 import org.jetbrains.annotations.NotNull;
 
-public class StrongQuote extends QuoteBase {
+public class StrongQuote implements Quote {
 
-  public StrongQuote(@NotNull String string, int begin, int end) {
-    super(string, begin, end);
+  private final String myString;
+
+  public StrongQuote(@NotNull String string) {
+    myString = string;
   }
 
   @Override
-  protected @NotNull String substitute(@NotNull String body, @NotNull Environment environment) {
-    return body;
+  public @NotNull String substitute(@NotNull Environment environment) {
+    return myString;
   }
 }
