@@ -1,5 +1,6 @@
 package com.spbau.bibaev.software.desing.shell.parsing;
 
+import com.spbau.bibaev.software.desing.shell.EmptyEnvironmentTestCase;
 import com.spbau.bibaev.software.desing.shell.parsing.quoting.Quote;
 import org.junit.Test;
 
@@ -7,12 +8,14 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class QuoteParserTest {
+public class QuoteParserTest extends EmptyEnvironmentTestCase {
   @Test
   public void simpleStringQuote() {
     List<List<Quote>> result = QuoteParser.parse("cat");
     assertEquals(1, result.size());
     assertEquals(1, result.get(0).size());
+    Quote quote = result.get(0).get(0);
+    assertEquals("cat", quote.substitute(getEmptyEnvironment()));
   }
 
   @Test

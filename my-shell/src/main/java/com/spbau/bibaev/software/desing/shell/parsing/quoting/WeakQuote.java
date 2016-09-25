@@ -4,7 +4,7 @@ import com.spbau.bibaev.software.desing.shell.Environment;
 import org.jetbrains.annotations.NotNull;
 
 public class WeakQuote implements Quote {
-  private static char VARIABLE_PREFIX = '$';
+  private static final char VARIABLE_PREFIX = '$';
   private final String myString;
 
   public WeakQuote(@NotNull String string) {

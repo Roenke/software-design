@@ -1,6 +1,6 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
-import com.spbau.bibaev.software.desing.shell.ExecutionResult;
+import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,21 +24,23 @@ public class CatCommand extends CommandBase {
     if (getArgs().size() > 1) {
       String filename = getArgs().get(0);
       File file = new File(filename);
-      if(!file.exists()) {
+      if (!file.exists()) {
         err.write(String.format("File %s not found", filename).getBytes());
       }
       Files.copy(file.toPath(), out);
+    } else {
+      copyStream(in, out);
     }
 
-    copyStream(in, out);
     return ExecutionResult.CONTINUE;
   }
 
   private void copyStream(@NotNull InputStream in, @NotNull OutputStream os) throws IOException {
     byte[] buffer = new byte[BUFFER_SIZE];
-    int read = in.read(buffer);
-    while(read > 0) {
+    int readCount = in.read(buffer);
+    while (readCount > 0) {
       os.write(buffer);
+      readCount = in.read(buffer);
     }
   }
 }

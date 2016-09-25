@@ -1,6 +1,6 @@
 package com.spbau.bibaev.software.desing.shell.parsing;
 
-import com.spbau.bibaev.software.desing.shell.ExecutionResult;
+import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandArg;
 import com.spbau.bibaev.software.desing.shell.command.CommandFactory;
 import com.spbau.bibaev.software.desing.shell.command.Executable;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class CommandParser {
-  public static Executable parse(@NotNull String input) throws EmptyCommandException, CommandCreationException {
+  public static Executable parse(@NotNull String input) throws EmptyCommandException {
     List<List<Quote>> commands = QuoteParser.parse(input); // split by unquoted '|' character
     List<Executable> executables = new ArrayList<>();
     for(List<Quote> command : commands) {
@@ -26,10 +26,10 @@ public final class CommandParser {
         throw new EmptyCommandException("Command must contain one or more characters");
       }
 
-      List<CommandArg> allQuotes = command.stream().map(CommandArg::new)
+      List<CommandArg> commandArgs = command.stream().map(CommandArg::new)
           .collect(Collectors.toList());
-      CommandArg name = allQuotes.get(0);
-      List<CommandArg> args = allQuotes.subList(1, allQuotes.size());
+      CommandArg name = commandArgs.get(0);
+      List<CommandArg> args = commandArgs.subList(1, commandArgs.size());
       executables.add(new MyExecutableWrapper(name, args));
     }
 

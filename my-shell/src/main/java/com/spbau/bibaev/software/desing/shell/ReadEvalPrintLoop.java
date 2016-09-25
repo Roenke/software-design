@@ -1,7 +1,7 @@
 package com.spbau.bibaev.software.desing.shell;
 
 import com.spbau.bibaev.software.desing.shell.command.Executable;
-import com.spbau.bibaev.software.desing.shell.ex.CommandCreationException;
+import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.ex.EmptyCommandException;
 import com.spbau.bibaev.software.desing.shell.parsing.CommandParser;
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +28,7 @@ class ReadEvalPrintLoop {
         result = command.perform(System.in, System.out, System.err);
       } catch (IOException e) {
         LOG.info(e);
-      } catch (EmptyCommandException | CommandCreationException e) {
+      } catch (EmptyCommandException e) {
         LOG.error(e);
       }
     }

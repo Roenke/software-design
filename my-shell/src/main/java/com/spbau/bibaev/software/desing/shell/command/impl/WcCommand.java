@@ -1,6 +1,6 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
-import com.spbau.bibaev.software.desing.shell.ExecutionResult;
+import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
 import com.spbau.bibaev.software.desing.shell.util.TextUtil;
 import org.jetbrains.annotations.NotNull;

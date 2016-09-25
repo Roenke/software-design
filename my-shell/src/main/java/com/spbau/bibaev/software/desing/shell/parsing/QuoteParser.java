@@ -38,6 +38,10 @@ class QuoteParser {
           lastProceedIx = descriptor.to + 1;
         }
 
+        if(lastProceedIx < word.length()) {
+          quote.append(new WeakQuote(word.substring(lastProceedIx)));
+        }
+
         commandResult.add(quote);
       }
 
