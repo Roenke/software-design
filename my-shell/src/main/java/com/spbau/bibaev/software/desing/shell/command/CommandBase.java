@@ -6,11 +6,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public abstract class CommandBase implements Executable {
-  protected final String ourName;
-  protected final List<String> ourArgs;
+  private final String myName;
+  private final List<String> myArgs;
 
   protected CommandBase(@NotNull String name, @NotNull List<String> args) {
-    ourName = name;
-    ourArgs = args;
+    myName = name;
+    myArgs = args;
+  }
+
+  @NotNull
+  protected String getName() {
+    return myName;
+  }
+
+  @NotNull
+  protected List<String> getArgs() {
+    return myArgs;
   }
 }

@@ -23,7 +23,7 @@ public class AssignCommand extends CommandBase {
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)
       throws IOException {
-    String expression = ourName;
+    String expression = getName();
     int eqIndex = expression.indexOf('=');
     Environment.getInstance().putVariableValue(expression.substring(0, eqIndex), expression.substring(eqIndex + 1));
     return ExecutionResult.CONTINUE;

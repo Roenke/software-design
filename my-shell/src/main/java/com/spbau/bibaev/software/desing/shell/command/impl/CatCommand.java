@@ -21,8 +21,8 @@ public class CatCommand extends CommandBase {
   @NotNull
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
-    if (ourArgs.size() > 1) {
-      String filename = ourArgs.get(0);
+    if (getArgs().size() > 1) {
+      String filename = getArgs().get(0);
       File file = new File(filename);
       if(!file.exists()) {
         err.write(String.format("File %s not found", filename).getBytes());

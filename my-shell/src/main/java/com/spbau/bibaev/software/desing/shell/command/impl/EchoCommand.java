@@ -16,7 +16,7 @@ public class EchoCommand extends CommandBase {
   @NotNull
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
-    final String output = ourArgs.stream().collect(Collectors.joining(" "));
+    final String output = getArgs().stream().collect(Collectors.joining(" "));
     out.write(output.getBytes());
     out.write(System.lineSeparator().getBytes());
     return ExecutionResult.CONTINUE;

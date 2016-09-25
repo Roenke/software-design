@@ -17,8 +17,8 @@ public class DefaultCommand extends CommandBase {
   @NotNull
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
-    List<String> command = new ArrayList<>(ourArgs);
-    command.add(0, ourName);
+    List<String> command = new ArrayList<>(getArgs());
+    command.add(0, getName());
     ProcessBuilder pb = new ProcessBuilder(command);
     pb.redirectError(ProcessBuilder.Redirect.PIPE)
         .redirectInput(ProcessBuilder.Redirect.PIPE)

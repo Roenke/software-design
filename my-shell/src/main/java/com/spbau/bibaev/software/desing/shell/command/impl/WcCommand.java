@@ -29,7 +29,7 @@ public class WcCommand extends CommandBase {
     }
 
     out.write(String.format("%d \t%d \t%d", lineCount, wordCount, characterCount).getBytes());
-    out.write(System.getProperty("line.separator").getBytes());
+    out.write(System.lineSeparator().getBytes());
 
     return ExecutionResult.CONTINUE;
   }

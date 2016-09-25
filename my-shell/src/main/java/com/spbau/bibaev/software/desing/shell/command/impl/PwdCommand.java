@@ -16,6 +16,7 @@ public class PwdCommand extends CommandBase {
   @Override
   public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     out.write(System.getProperty("user.dir").getBytes());
+    out.write(System.lineSeparator().getBytes());
     return ExecutionResult.CONTINUE;
   }
 }
