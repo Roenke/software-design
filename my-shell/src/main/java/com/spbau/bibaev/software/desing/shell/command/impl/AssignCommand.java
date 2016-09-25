@@ -1,6 +1,6 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
-import com.spbau.bibaev.software.desing.shell.Environment;
+import com.spbau.bibaev.software.desing.shell.EnvironmentImpl;
 import com.spbau.bibaev.software.desing.shell.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
 import com.spbau.bibaev.software.desing.shell.util.TextUtil;
@@ -25,7 +25,7 @@ public class AssignCommand extends CommandBase {
       throws IOException {
     String expression = getName();
     int eqIndex = expression.indexOf('=');
-    Environment.getInstance().putVariableValue(expression.substring(0, eqIndex), expression.substring(eqIndex + 1));
+    EnvironmentImpl.getInstance().putVariableValue(expression.substring(0, eqIndex), expression.substring(eqIndex + 1));
     return ExecutionResult.CONTINUE;
   }
 }

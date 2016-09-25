@@ -8,15 +8,15 @@ import static org.junit.Assert.assertTrue;
 public class EnvironmentTest {
   @Test
   public void unknownVariableReturnsEmptyString() {
-    final String value = Environment.getInstance().getVariableValue("unknownVariable");
+    final String value = EnvironmentImpl.getInstance().getVariableValue("unknownVariable");
     assertTrue(value.isEmpty());
   }
 
   @Test
   public void overrideOldValue() {
-    Environment.getInstance().putVariableValue("testVar", "10");
-    assertEquals(Environment.getInstance().getVariableValue("testVar"), "10");
-    Environment.getInstance().putVariableValue("testVar", "20");
-    assertEquals(Environment.getInstance().getVariableValue("testVar"), "20");
+    EnvironmentImpl.getInstance().putVariableValue("testVar", "10");
+    assertEquals(EnvironmentImpl.getInstance().getVariableValue("testVar"), "10");
+    EnvironmentImpl.getInstance().putVariableValue("testVar", "20");
+    assertEquals(EnvironmentImpl.getInstance().getVariableValue("testVar"), "20");
   }
 }

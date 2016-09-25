@@ -8,8 +8,10 @@ import java.util.List;
 
 public class CompositeQuote implements Quote {
   private final List<Quote> myQuotes = new ArrayList<>();
+
+  @NotNull
   @Override
-  public @NotNull String substitute(@NotNull Environment environment) {
+  public String substitute(@NotNull Environment environment) {
     StringBuilder builder = new StringBuilder();
     for (Quote quote : myQuotes) {
       builder.append(quote.substitute(environment));

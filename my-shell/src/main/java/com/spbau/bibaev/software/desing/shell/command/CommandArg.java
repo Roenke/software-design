@@ -1,6 +1,6 @@
 package com.spbau.bibaev.software.desing.shell.command;
 
-import com.spbau.bibaev.software.desing.shell.Environment;
+import com.spbau.bibaev.software.desing.shell.EnvironmentImpl;
 import com.spbau.bibaev.software.desing.shell.parsing.quoting.Quote;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +13,6 @@ public class CommandArg {
 
   @NotNull
   public String getValue() {
-    return myQuote.substitute(Environment.getInstance());
+    return myQuote.substitute(EnvironmentImpl.getInstance());
   }
 }

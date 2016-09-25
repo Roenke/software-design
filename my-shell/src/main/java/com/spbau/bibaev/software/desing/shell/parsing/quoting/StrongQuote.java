@@ -11,8 +11,9 @@ public class StrongQuote implements Quote {
     myString = string;
   }
 
+  @NotNull
   @Override
-  public @NotNull String substitute(@NotNull Environment environment) {
+  public String substitute(@NotNull Environment environment) {
     return myString;
   }
 }
