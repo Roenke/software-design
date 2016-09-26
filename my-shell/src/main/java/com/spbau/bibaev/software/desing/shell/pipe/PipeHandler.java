@@ -10,10 +10,21 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handler for commands which connected by pipeline. Executes first command,
+ *
+ * @author Vitaliy.Bibaev
+ * @see Executable
+ */
 public class PipeHandler implements Executable {
   private final Executable myLeftExecutable;
   private final Executable myRightExecutable;
 
+  /**
+   * Constructs new handler
+   * @param left The first command for execution
+   * @param right The second command for execution
+   */
   public PipeHandler(@NotNull Executable left, @NotNull Executable right) {
     myLeftExecutable = left;
     myRightExecutable = right;

@@ -6,9 +6,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+/**
+ * Utility methods for Input/Output stream in java
+ */
 public class IoStreamUtils {
   private static final int BUFFER_SIZE = 4096;
 
+  /**
+   * Copy all content of {@code in} stream into output stream. Does not close any stream
+   * @param in The source stream
+   * @param out The destination stream
+   * @throws IOException Thrown if any stream reading/writing throws an exception
+   */
   public static void copy(@NotNull InputStream in, @NotNull OutputStream out)
       throws IOException {
     byte[] buffer = new byte[BUFFER_SIZE];

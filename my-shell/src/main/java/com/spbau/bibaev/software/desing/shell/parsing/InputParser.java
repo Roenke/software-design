@@ -17,7 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class CommandParser {
+/**
+ * Parser user input into one abstract executable task
+ *
+ * @author Vitaliy.Bibaev
+ */
+public class InputParser {
+
+  /**
+   * Parses user input into one executable
+   * @param input The user input
+   * @return Something that can be executed
+   * @throws EmptyCommandException Thrown if command is empty, "cat | | ls" - for example second command is empty
+   */
   public static Executable parse(@NotNull String input) throws EmptyCommandException {
     List<List<Quote>> commands = QuoteParser.parse(input); // split by unquoted '|' character
     List<Executable> executables = new ArrayList<>();
@@ -41,6 +53,9 @@ public final class CommandParser {
     return previous;
   }
 
+  /**
+   * Helper wrapper for each command, substitute all quotes before command execution
+   */
   private static class MyExecutableWrapper implements Executable {
     private final CommandArg myName;
     private final List<CommandArg> myArgs;

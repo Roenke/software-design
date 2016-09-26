@@ -1,6 +1,5 @@
 package com.spbau.bibaev.software.desing.shell;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,7 +11,7 @@ public class EmptyEnvironmentTestCase {
   protected Environment getEmptyEnvironment() {
     return new Environment() {
       private final Map<String, String> map = new HashMap<>();
-      @NotNull
+
       @Override
       public String getVariableValue( String variable) {
         return map.getOrDefault(variable, "");
@@ -23,7 +22,6 @@ public class EmptyEnvironmentTestCase {
         map.put(variable, value);
       }
 
-      @NotNull
       @Override
       public Path getCurrentDirectory() {
         return Paths.get(System.getProperty("user.dir"));

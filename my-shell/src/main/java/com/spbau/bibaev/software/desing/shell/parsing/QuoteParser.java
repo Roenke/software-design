@@ -10,27 +10,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Parser all input to commands and commands to tokens (name, arguments)
+ *
+ * @author Vitaliy.Bibaev
+ */
 class QuoteParser {
   private static final char NO_QUOTE = '#';
   private static final char STRONG_QUOTE = '\'';
   private static final char WEAK_QUOTE = '"';
 
+  /**
+   * Parse the {@code input} to list is quotes delimited by pipeline character
+   * @param input The raw user input
+   * @return The list of list of quotes for each command in
+   */
   @NotNull
   static List<List<Quote>> parse(@NotNull String input) {
     List<List<Quote>> result = new ArrayList<>();
     final List<MyQuoteDescriptor> quotes = findQuotes(input);
+
     List<String> commands = splitWithQuotes(input, quotes, '|');
     for (String command : commands) {
       List<MyQuoteDescriptor> commandQuotes = findQuotes(command);
       List<String> parts = splitWithQuotes(command, commandQuotes, ' ').stream()
           .filter(x -> !x.trim().isEmpty()).collect(Collectors.toList());
+
       List<Quote> commandResult = new ArrayList<>();
       for (String word : parts) {
         List<MyQuoteDescriptor> wordQuotes = findQuotes(word);
+
         int lastProceedIx = 0;
         CompositeQuote quote = new CompositeQuote();
         for (MyQuoteDescriptor descriptor : wordQuotes) {
-          if(descriptor.from != lastProceedIx) {
+          if (descriptor.from != lastProceedIx) {
             quote.append(new WeakQuote(word.substring(lastProceedIx, descriptor.from)));
           }
 
@@ -38,7 +51,7 @@ class QuoteParser {
           lastProceedIx = descriptor.to + 1;
         }
 
-        if(lastProceedIx < word.length()) {
+        if (lastProceedIx < word.length()) {
           quote.append(new WeakQuote(word.substring(lastProceedIx)));
         }
 
@@ -65,6 +78,7 @@ class QuoteParser {
             ? new MyQuoteDescriptor(input, MyQuoteType.STRONG, lastQuoteIx, i)
             : new MyQuoteDescriptor(input, MyQuoteType.WEAK, lastQuoteIx, i);
         quotes.add(quote);
+
         lastQuote = NO_QUOTE;
         lastQuoteIx = -1;
       }
@@ -117,7 +131,7 @@ class QuoteParser {
 
     Quote toQuote() {
       String body = myString.substring(from + 1, to);
-      if(type == MyQuoteType.WEAK) {
+      if (type == MyQuoteType.WEAK) {
         return new WeakQuote(body);
       }
 

@@ -3,7 +3,7 @@ package com.spbau.bibaev.software.desing.shell;
 import com.spbau.bibaev.software.desing.shell.command.Executable;
 import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.ex.EmptyCommandException;
-import com.spbau.bibaev.software.desing.shell.parsing.CommandParser;
+import com.spbau.bibaev.software.desing.shell.parsing.InputParser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,7 +24,7 @@ class ReadEvalPrintLoop {
           continue;
         }
 
-        final Executable command = CommandParser.parse(userInput);
+        final Executable command = InputParser.parse(userInput);
         result = command.perform(System.in, System.out, System.err);
       } catch (IOException e) {
         LOG.info(e);
