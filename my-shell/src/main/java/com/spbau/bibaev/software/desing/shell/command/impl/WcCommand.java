@@ -28,7 +28,7 @@ public class WcCommand extends CommandBase {
 
   @NotNull
   @Override
-  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)
+  public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)
       throws IOException {
     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
     List<String> lines = reader.lines().collect(Collectors.toList());

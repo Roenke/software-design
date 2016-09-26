@@ -25,6 +25,6 @@ public interface Executable {
    * @throws IOException Thrown if IO operations with streams failed
    */
   @NotNull
-  ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)
+  ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)
       throws IOException;
 }

@@ -44,7 +44,7 @@ public class AssignCommand extends CommandBase {
 
   @NotNull
   @Override
-  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)
+  public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)
       throws IOException {
     String expression = getName();
     int eqIndex = expression.indexOf(ASSIGN_CHARACTER);

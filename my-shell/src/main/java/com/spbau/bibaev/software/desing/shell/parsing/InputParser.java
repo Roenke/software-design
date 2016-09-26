@@ -68,13 +68,13 @@ public class InputParser implements Parser<Executable> {
     }
 
     @Override
-    public @NotNull ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out,
+    public @NotNull ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out,
                                             @NotNull OutputStream err) throws IOException {
       String name = myName.getValue();
       List<String> args = myArgs.stream().map(CommandArg::getValue).collect(Collectors.toList());
       try {
         Executable command = CommandFactory.getInstance().createCommand(name, args);
-        return command.perform(in, out, err);
+        return command.execute(in, out, err);
       } catch (CommandCreationException e) {
         return ExecutionResult.SHUTDOWN;
       }

@@ -29,7 +29,7 @@ public class DefaultCommand extends CommandBase {
 
   @NotNull
   @Override
-  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
+  public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     List<String> command = new ArrayList<>(getArgs());
     command.add(0, getName());
     ProcessBuilder pb = new ProcessBuilder(command);

@@ -27,7 +27,7 @@ public class PwdCommand extends CommandBase {
 
   @NotNull
   @Override
-  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
+  public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     out.write(System.getProperty("user.dir").getBytes());
     out.write(System.lineSeparator().getBytes());
     return ExecutionResult.CONTINUE;

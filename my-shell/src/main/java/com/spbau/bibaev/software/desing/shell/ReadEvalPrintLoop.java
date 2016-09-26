@@ -35,7 +35,7 @@ class ReadEvalPrintLoop {
         }
 
         final Executable command = parser.parse(userInput);
-        result = command.perform(System.in, System.out, System.err);
+        result = command.execute(System.in, System.out, System.err);
       } catch (IOException e) {
         LOG.info(e);
       } catch (ParseException e) {

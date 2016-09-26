@@ -32,7 +32,7 @@ public class PipeHandler implements Executable {
 
   @NotNull
   @Override
-  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
+  public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     List<Integer> buffer = new ArrayList<>();
     OutputStream outputStream = new OutputStream() {
       @Override
@@ -41,7 +41,7 @@ public class PipeHandler implements Executable {
       }
     };
 
-    ExecutionResult firstResult = myLeftExecutable.perform(in, outputStream, err);
+    ExecutionResult firstResult = myLeftExecutable.execute(in, outputStream, err);
     if(firstResult == ExecutionResult.SHUTDOWN) {
       return ExecutionResult.SHUTDOWN;
     }
@@ -54,6 +54,6 @@ public class PipeHandler implements Executable {
       }
     };
 
-    return myRightExecutable.perform(inputStream, out, err);
+    return myRightExecutable.execute(inputStream, out, err);
   }
 }

@@ -28,7 +28,7 @@ public class ExitCommand extends CommandBase {
 
   @NotNull
   @Override
-  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
+  public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
     return ExecutionResult.SHUTDOWN;
   }
 }

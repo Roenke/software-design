@@ -33,7 +33,7 @@ public class CatCommand extends CommandBase {
 
   @NotNull
   @Override
-  public ExecutionResult perform(@NotNull InputStream in, @NotNull OutputStream out,
+  public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out,
                                  @NotNull OutputStream err) throws IOException {
     List<String> args = getArgs();
     if (args.size() == 0) {
