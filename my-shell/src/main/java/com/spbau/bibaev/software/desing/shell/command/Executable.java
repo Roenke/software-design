@@ -21,7 +21,7 @@ public interface Executable {
    * @param in  Input Stream
    * @param out Output Stream
    * @param err Error Stream
-   * @return Result of command execution
+   * @return Res ult of command execution
    * @throws IOException Thrown if IO operations with streams failed
    */
   @NotNull
