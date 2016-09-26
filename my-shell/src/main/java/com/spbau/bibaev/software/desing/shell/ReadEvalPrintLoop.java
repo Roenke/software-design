@@ -11,16 +11,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * The read-evaluate-print loop
+ *
+ * @author Vitaliy.Bibaev
+ */
 class ReadEvalPrintLoop {
   private static final Logger LOG = LogManager.getLogger(ReadEvalPrintLoop.class);
 
+  /**
+   * Starts the loop
+   */
   static void start() {
     BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
     ExecutionResult result = ExecutionResult.CONTINUE;
     while (result != ExecutionResult.SHUTDOWN) {
       try {
         final String userInput = consoleReader.readLine();
-        if(userInput.trim().isEmpty()) {
+        if (userInput.trim().isEmpty()) {
           continue;
         }
 
