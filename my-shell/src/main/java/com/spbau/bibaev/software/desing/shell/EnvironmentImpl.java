@@ -2,13 +2,16 @@ package com.spbau.bibaev.software.desing.shell;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
 public class EnvironmentImpl implements Environment {
   private final Map<String, String> myVariables = new HashMap<>();
-
+  private final Path myCurrentDirectory;
   private EnvironmentImpl() {
+    myCurrentDirectory = Paths.get(System.getProperty("user.dir"));
   }
 
   private static class Holder {
@@ -30,5 +33,11 @@ public class EnvironmentImpl implements Environment {
 
   public void putVariableValue(@NotNull String variable, @NotNull String value) {
     myVariables.put(variable, value);
+  }
+
+  @NotNull
+  @Override
+  public Path getCurrentDirectory() {
+    return myCurrentDirectory;
   }
 }

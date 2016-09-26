@@ -58,11 +58,11 @@ public class CommandFactory {
     return Holder.INSTANCE;
   }
 
-  /** Creates command by name and list of arguments
-   * @param name
-   *        The string representation of command name
-   * @param args
-   *        The list of command arguments
+  /**
+   * Creates command by name and list of arguments
+   *
+   * @param name The string representation of command name
+   * @param args The list of command arguments
    * @return The specified command
    * @throws CommandCreationException if the constructor of command cannot be found
    */

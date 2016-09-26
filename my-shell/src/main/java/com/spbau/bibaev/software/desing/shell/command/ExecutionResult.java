@@ -2,8 +2,8 @@ package com.spbau.bibaev.software.desing.shell.command;
 
 /**
  * Value is used for represent result of command evaluation
- * @author Vitaliy.Bibaev
  *
+ * @author Vitaliy.Bibaev
  * @see Executable
  */
 public enum ExecutionResult {

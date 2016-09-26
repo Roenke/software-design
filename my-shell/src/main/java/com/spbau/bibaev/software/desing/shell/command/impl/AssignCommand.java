@@ -11,25 +11,30 @@ import java.util.List;
 
 /**
  * Update execution environment - add or update global variable
+ * <p>usage: name=value</p>
+ * <p>name should be a valid identifiers</p>
+ * <p>value is any string</p>
  *
- * usage: name=value
- * name should be a valid identifier
- * value is any string
  * @author Vitaliy.Bibaev
+ * @see CommandBase
  */
 public class AssignCommand extends CommandBase {
   private static final char ASSIGN_CHARACTER = '=';
 
+  /**
+   * Construct a new assignment command
+   *
+   * @param name Name of command - valid assignment expression
+   * @param args Empty list of arguments
+   */
   public AssignCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
   }
 
-  /** Checks that expression can be interpreted as assignment expression.
-   * Rule for matching something as expression:
-   * id=string
+  /**
+   * Checks that expression can be interpreted as assignment expression. Expression pattern: {@code variable=value}
    *
-   * @param expression
-   *        The candidate to be an expression
+   * @param expression The candidate to be an expression
    * @return true is {@code expression} can be interpreted as assignment, false otherwise
    */
   public static boolean isAssignExpression(@NotNull String expression) {

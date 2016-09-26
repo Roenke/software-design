@@ -8,7 +8,20 @@ import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command that takes all arguments and write them to OutputStream
+ *
+ * @author Vitaliy.Bibaev
+ * @see CommandBase
+ */
 public class EchoCommand extends CommandBase {
+
+  /**
+   * Constructs a new command
+   *
+   * @param name The name of command
+   * @param args The list of arguments
+   */
   public EchoCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
   }

@@ -2,14 +2,27 @@ package com.spbau.bibaev.software.desing.shell.command.impl;
 
 import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
+import com.spbau.bibaev.software.desing.shell.util.IoStreamUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Command for delegating user command to OS, if command not matched with any of already existed
+ *
+ * @author Vitaliy.Bibaev
+ * @see CommandBase
+ */
 public class DefaultCommand extends CommandBase {
-  private static byte[] BUFFER = new byte[4096];
+
+  /**
+   * Constructs a new command.
+   *
+   * @param name The name of which will executed
+   * @param args The list of parameters which will passed to command
+   */
   public DefaultCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
   }
@@ -26,16 +39,8 @@ public class DefaultCommand extends CommandBase {
 
     final Process start = pb.start();
     InputStream inputStream = start.getInputStream();
-    pipe(inputStream, out);
+    IoStreamUtils.copy(inputStream, out);
 
     return ExecutionResult.CONTINUE;
-  }
-
-  private static void pipe(@NotNull InputStream inputStream, @NotNull OutputStream outputStream) throws IOException {
-    int readCount = inputStream.read(BUFFER);
-    while(readCount != -1) {
-      outputStream.write(BUFFER, 0, readCount);
-      readCount = inputStream.read(BUFFER);
-    }
   }
 }

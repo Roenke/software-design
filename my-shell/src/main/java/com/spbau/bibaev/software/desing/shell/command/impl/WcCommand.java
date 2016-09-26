@@ -9,7 +9,19 @@ import java.io.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Count lines, word and characters in input stream
+ *
+ * @author Vitaliy.Bibaev
+ * @see CommandBase
+ */
 public class WcCommand extends CommandBase {
+  /**
+   * Constructs a new command
+   *
+   * @param name The name of command - "wc"
+   * @param args The list of arguments
+   */
   public WcCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
   }
@@ -23,7 +35,7 @@ public class WcCommand extends CommandBase {
     int lineCount = lines.size();
     int wordCount = 0;
     int characterCount = 0;
-    for(String line : lines) {
+    for (String line : lines) {
       characterCount += line.length();
       wordCount += TextUtil.getWordCount(line);
     }

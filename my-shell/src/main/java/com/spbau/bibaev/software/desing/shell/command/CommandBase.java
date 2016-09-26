@@ -12,6 +12,7 @@ import java.util.List;
  *
  * @author Vitaliy.Bibaev
  * @see CommandFactory
+ * @see Executable
  */
 public abstract class CommandBase implements Executable {
   private final String myName;
