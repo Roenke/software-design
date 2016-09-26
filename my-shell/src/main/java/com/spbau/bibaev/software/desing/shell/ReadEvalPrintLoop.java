@@ -2,8 +2,9 @@ package com.spbau.bibaev.software.desing.shell;
 
 import com.spbau.bibaev.software.desing.shell.command.Executable;
 import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
-import com.spbau.bibaev.software.desing.shell.ex.EmptyCommandException;
+import com.spbau.bibaev.software.desing.shell.ex.ParseException;
 import com.spbau.bibaev.software.desing.shell.parsing.InputParser;
+import com.spbau.bibaev.software.desing.shell.parsing.Parser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,6 +25,7 @@ class ReadEvalPrintLoop {
    */
   static void start() {
     BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
+    Parser<Executable> parser = new InputParser();
     ExecutionResult result = ExecutionResult.CONTINUE;
     while (result != ExecutionResult.SHUTDOWN) {
       try {
@@ -32,11 +34,11 @@ class ReadEvalPrintLoop {
           continue;
         }
 
-        final Executable command = InputParser.parse(userInput);
+        final Executable command = parser.parse(userInput);
         result = command.perform(System.in, System.out, System.err);
       } catch (IOException e) {
         LOG.info(e);
-      } catch (EmptyCommandException e) {
+      } catch (ParseException e) {
         LOG.error(e);
       }
     }

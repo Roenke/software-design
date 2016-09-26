@@ -4,7 +4,7 @@ package com.spbau.bibaev.software.desing.shell.ex;
  * Thrown if command name not specified
  * @author Vitaliy.Bibaev
  */
-public class EmptyCommandException extends Exception {
+public class EmptyCommandException extends ParseException {
   /**
    * Constructs a new exception object
    *

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Update execution environment - add or update global variable
  * <p>usage: name=value</p>
- * <p>name should be a valid identifiers</p>
+ * <p>name should be a valid identifier</p>
  * <p>value is any string</p>
  *
  * @author Vitaliy.Bibaev

@@ -8,9 +8,6 @@ package com.spbau.bibaev.software.desing.shell;
  */
 public class EntryPoint {
 
-  // TODO; add logs
-  // TODO: avoid the static methods for parsers
-
   /**
    * The entry point
    * @param args The command line arguments

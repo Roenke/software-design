@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  *
  * @author Vitaliy.Bibaev
  */
-class QuoteParser {
+class QuoteParser implements Parser<List<List<Quote>>> {
   private static final char NO_QUOTE = '#';
   private static final char STRONG_QUOTE = '\'';
   private static final char WEAK_QUOTE = '"';
@@ -26,7 +26,7 @@ class QuoteParser {
    * @return The list of list of quotes for each command in
    */
   @NotNull
-  static List<List<Quote>> parse(@NotNull String input) {
+  public List<List<Quote>> parse(@NotNull String input) {
     List<List<Quote>> result = new ArrayList<>();
     final List<MyQuoteDescriptor> quotes = findQuotes(input);
 

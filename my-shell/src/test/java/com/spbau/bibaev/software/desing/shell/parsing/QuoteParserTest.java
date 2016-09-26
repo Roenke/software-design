@@ -9,9 +9,11 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class QuoteParserTest extends EmptyEnvironmentTestCase {
+  private final QuoteParser myParser = new QuoteParser();
+
   @Test
   public void simpleStringQuote() {
-    List<List<Quote>> result = QuoteParser.parse("cat");
+    List<List<Quote>> result = myParser.parse("cat");
     assertEquals(1, result.size());
     assertEquals(1, result.get(0).size());
     Quote quote = result.get(0).get(0);
@@ -20,7 +22,7 @@ public class QuoteParserTest extends EmptyEnvironmentTestCase {
 
   @Test
   public void pipeStringQuote() {
-    List<List<Quote>> result = QuoteParser.parse("cat | help");
+    List<List<Quote>> result = myParser.parse("cat | help");
     assertEquals(2, result.size());
     assertEquals(1, result.get(0).size());
     assertEquals(1, result.get(1).size());
@@ -28,7 +30,7 @@ public class QuoteParserTest extends EmptyEnvironmentTestCase {
 
   @Test
   public void multipleParameters() {
-    List<List<Quote>> result = QuoteParser.parse("cat ard1 ard2 | help arg | pwd");
+    List<List<Quote>> result = myParser.parse("cat ard1 ard2 | help arg | pwd");
     assertEquals(3, result.size());
     assertEquals(3, result.get(0).size());
     assertEquals(2, result.get(1).size());
@@ -37,14 +39,14 @@ public class QuoteParserTest extends EmptyEnvironmentTestCase {
 
   @Test
   public void quoteParameter() {
-    List<List<Quote>> result = QuoteParser.parse("cat \"arg1 arg2\"");
+    List<List<Quote>> result = myParser.parse("cat \"arg1 arg2\"");
     assertEquals(1, result.size());
     assertEquals(2, result.get(0).size());
   }
 
   @Test
   public void quotedPipe() {
-    List<List<Quote>> result = QuoteParser.parse("cat \"arg1 | arg2\" \'|\' ");
+    List<List<Quote>> result = myParser.parse("cat \"arg1 | arg2\" \'|\' ");
     assertEquals(1, result.size());
     assertEquals(3, result.get(0).size());
   }

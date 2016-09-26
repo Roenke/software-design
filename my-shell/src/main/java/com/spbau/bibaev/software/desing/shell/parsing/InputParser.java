@@ -6,6 +6,7 @@ import com.spbau.bibaev.software.desing.shell.command.CommandFactory;
 import com.spbau.bibaev.software.desing.shell.command.Executable;
 import com.spbau.bibaev.software.desing.shell.ex.CommandCreationException;
 import com.spbau.bibaev.software.desing.shell.ex.EmptyCommandException;
+import com.spbau.bibaev.software.desing.shell.ex.ParseException;
 import com.spbau.bibaev.software.desing.shell.parsing.quoting.Quote;
 import com.spbau.bibaev.software.desing.shell.pipe.PipeHandler;
 import org.jetbrains.annotations.NotNull;
@@ -22,16 +23,17 @@ import java.util.stream.Collectors;
  *
  * @author Vitaliy.Bibaev
  */
-public class InputParser {
+public class InputParser implements Parser<Executable> {
 
+  private final QuoteParser myQuoteParser = new QuoteParser();
   /**
    * Parses user input into one executable
    * @param input The user input
    * @return Something that can be executed
-   * @throws EmptyCommandException Thrown if command is empty, "cat | | ls" - for example second command is empty
+   * @throws EmptyCommandException Thrown if command is empty, {@code "cat | | ls"} - for example second command is empty
    */
-  public static Executable parse(@NotNull String input) throws EmptyCommandException {
-    List<List<Quote>> commands = QuoteParser.parse(input); // split by unquoted '|' character
+  public Executable parse(@NotNull String input) throws ParseException {
+    List<List<Quote>> commands = myQuoteParser.parse(input); // split by unquoted '|' character
     List<Executable> executables = new ArrayList<>();
     for(List<Quote> command : commands) {
       if(command.size() == 0) {
