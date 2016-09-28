@@ -22,7 +22,8 @@ public class PipeHandler implements Executable {
 
   /**
    * Constructs new handler
-   * @param left The first command for execution
+   *
+   * @param left  The first command for execution
    * @param right The second command for execution
    */
   public PipeHandler(@NotNull Executable left, @NotNull Executable right) {
@@ -33,27 +34,43 @@ public class PipeHandler implements Executable {
   @NotNull
   @Override
   public ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err) throws IOException {
-    List<Integer> buffer = new ArrayList<>();
-    OutputStream outputStream = new OutputStream() {
-      @Override
-      public void write(int b) throws IOException {
-        buffer.add(b);
-      }
-    };
+    MySequentialPipe pipe = new MySequentialPipe();
 
-    ExecutionResult firstResult = myLeftExecutable.execute(in, outputStream, err);
-    if(firstResult == ExecutionResult.SHUTDOWN) {
+    ExecutionResult firstResult = myLeftExecutable.execute(in, pipe.getOutputStream(), err);
+    pipe.getOutputStream().close();
+    if (firstResult == ExecutionResult.SHUTDOWN) {
       return ExecutionResult.SHUTDOWN;
     }
 
-    InputStream inputStream = new InputStream() {
-      private int pos = 0;
+    return myRightExecutable.execute(pipe.getInputStream(), out, err);
+  }
+
+  /**
+   * Utility class for pipe stream supporting
+   */
+  private static class MySequentialPipe {
+    private static final int INITIAL_BUFFER_SIZE = 4096;
+    private int myOffset = 0;
+    private final List<Integer> myBuffer = new ArrayList<>(INITIAL_BUFFER_SIZE);
+    private final InputStream myIn = new InputStream() {
       @Override
       public int read() throws IOException {
-        return pos < buffer.size() ? buffer.get(pos++) : -1;
+        return myOffset < myBuffer.size() ? myBuffer.get(myOffset++) : -1;
+      }
+    };
+    private final OutputStream myOut = new OutputStream() {
+      @Override
+      public void write(int b) throws IOException {
+        myBuffer.add(b);
       }
     };
 
-    return myRightExecutable.execute(inputStream, out, err);
+    InputStream getInputStream() {
+      return myIn;
+    }
+
+    OutputStream getOutputStream() {
+      return myOut;
+    }
   }
 }
