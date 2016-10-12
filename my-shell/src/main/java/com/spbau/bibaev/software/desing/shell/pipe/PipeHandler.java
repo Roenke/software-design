@@ -23,8 +23,8 @@ public class PipeHandler implements Executable {
   /**
    * Constructs new handler
    *
-   * @param left  The first command for execution
-   * @param right The second command for execution
+   * @param left the first command for execution
+   * @param right the second command for execution
    */
   public PipeHandler(@NotNull Executable left, @NotNull Executable right) {
     myLeftExecutable = left;

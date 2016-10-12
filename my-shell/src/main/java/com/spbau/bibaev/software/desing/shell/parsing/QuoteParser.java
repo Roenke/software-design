@@ -22,8 +22,9 @@ class QuoteParser implements Parser<List<List<Quote>>> {
 
   /**
    * Parse the {@code input} to list is quotes delimited by pipeline character
-   * @param input The raw user input
-   * @return The list of list of quotes for each command in
+   *
+   * @param input the raw user input
+   * @return the list of list of quotes for each command in
    */
   @NotNull
   public List<List<Quote>> parse(@NotNull String input) {

@@ -4,7 +4,8 @@ import com.spbau.bibaev.software.desing.shell.Environment;
 import com.spbau.bibaev.software.desing.shell.EnvironmentImpl;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class StrongQuoteTest {
 

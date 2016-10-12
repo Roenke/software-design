@@ -19,8 +19,8 @@ public class WcCommand extends CommandBase {
   /**
    * Constructs a new command
    *
-   * @param name The name of command - "wc"
-   * @param args The list of arguments
+   * @param name the name of command - "wc"
+   * @param args the list of arguments
    */
   public WcCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);

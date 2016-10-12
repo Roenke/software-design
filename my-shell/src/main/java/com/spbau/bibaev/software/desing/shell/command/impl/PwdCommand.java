@@ -18,8 +18,8 @@ public class PwdCommand extends CommandBase {
   /**
    * Constructs a new command
    *
-   * @param name The name of command - "pwd"
-   * @param args The list of arguments
+   * @param name the name of command - "pwd"
+   * @param args the list of arguments
    */
   public PwdCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);

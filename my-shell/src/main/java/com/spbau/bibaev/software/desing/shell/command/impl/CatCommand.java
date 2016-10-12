@@ -24,8 +24,8 @@ public class CatCommand extends CommandBase {
   /**
    * Constructs a new command
    *
-   * @param name The name of this command
-   * @param args The list of arguments. Each argument represent relative path to file
+   * @param name the name of this command
+   * @param args the list of arguments. Each argument represent relative path to file
    */
   public CatCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);

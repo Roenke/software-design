@@ -13,24 +13,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Parser user input into one abstract executable task
+ * Parser for parsing of user input for the one abstract executable task
  *
  * @author Vitaliy.Bibaev
  */
 public class InputParser implements Parser<Executable> {
 
   private final QuoteParser myQuoteParser = new QuoteParser();
+
   /**
    * Parses user input into one executable
-   * @param input The user input
-   * @return Something that can be executed
-   * @throws EmptyCommandException Thrown if command is empty, {@code "cat | | ls"} - for example second command is empty
+   *
+   * @param input the user input
+   * @return something that can be executed
+   * @throws EmptyCommandException thrown if command is empty, {@code "cat | | ls"} - for example second command is empty
    */
   public Executable parse(@NotNull String input) throws ParseException {
     List<List<Quote>> commands = myQuoteParser.parse(input); // split by unquoted '|' character
     List<Executable> executables = new ArrayList<>();
-    for(List<Quote> command : commands) {
-      if(command.size() == 0) {
+    for (List<Quote> command : commands) {
+      if (command.size() == 0) {
         throw new EmptyCommandException("Command must contain one or more characters");
       }
 
@@ -42,7 +44,7 @@ public class InputParser implements Parser<Executable> {
     }
 
     Executable previous = executables.get(0);
-    for(int i = 1; i < executables.size(); i++) {
+    for (int i = 1; i < executables.size(); i++) {
       previous = new PipeHandler(previous, executables.get(i));
     }
 

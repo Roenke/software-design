@@ -13,7 +13,7 @@ public class EmptyEnvironmentTestCase {
       private final Map<String, String> map = new HashMap<>();
 
       @Override
-      public String getVariableValue( String variable) {
+      public String getVariableValue(String variable) {
         return map.getOrDefault(variable, "");
       }
 

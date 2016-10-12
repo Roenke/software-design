@@ -17,7 +17,6 @@ public interface Environment {
    * @return The value of variable if the variable existed in environment,
    * otherwise empty string
    */
-  @NotNull
   String getVariableValue(@NotNull String variable);
 
   /**
@@ -33,6 +32,5 @@ public interface Environment {
    *
    * @return The absolute path to working directory
    */
-  @NotNull
   Path getCurrentDirectory();
 }

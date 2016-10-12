@@ -1,12 +1,14 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
 import com.spbau.bibaev.software.desing.shell.EnvironmentImpl;
-import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
+import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.util.TextUtil;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -24,8 +26,8 @@ public class AssignCommand extends CommandBase {
   /**
    * Construct a new assignment command
    *
-   * @param name Name of command - valid assignment expression
-   * @param args Empty list of arguments
+   * @param name name of command - valid assignment expression
+   * @param args empty list of arguments
    */
   public AssignCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
@@ -34,7 +36,7 @@ public class AssignCommand extends CommandBase {
   /**
    * Checks that expression can be interpreted as assignment expression. Expression pattern: {@code variable=value}
    *
-   * @param expression The candidate to be an expression
+   * @param expression the candidate to be an expression
    * @return true is {@code expression} can be interpreted as assignment, false otherwise
    */
   public static boolean isAssignExpression(@NotNull String expression) {

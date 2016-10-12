@@ -32,7 +32,7 @@ public abstract class CommandBase implements Executable {
   /**
    * Returns a name of command (name may be used)
    *
-   * @return String represents name of the command
+   * @return string represents name of the command
    */
   @NotNull
   protected String getName() {
@@ -42,7 +42,7 @@ public abstract class CommandBase implements Executable {
   /**
    * Returns list of command arguments (with all substitutions)
    *
-   * @return list if
+   * @return list of strings represented command arguments
    */
   @NotNull
   protected List<String> getArgs() {

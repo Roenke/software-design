@@ -10,8 +10,10 @@ import org.jetbrains.annotations.NotNull;
 public class CommandCreationException extends Exception {
 
   /**
-   * @param name  The name of command
-   * @param cause The reason of the exception
+   * Creates new exception instance
+   *
+   * @param name the name of command
+   * @param cause the reason of the exception
    */
   public CommandCreationException(@NotNull String name, @NotNull Throwable cause) {
     super("Cannot create command " + name, cause);

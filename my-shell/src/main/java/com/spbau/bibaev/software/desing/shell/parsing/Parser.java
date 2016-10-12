@@ -5,15 +5,17 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Basic interface for all parsers
- * @param <T> The result of parse operation
+ *
+ * @param <T> the result of parse operation
  */
 public interface Parser<T> {
 
   /**
    * Parses {@code input} and returns something
-   * @param input The input string
-   * @return The result of parsing operation
-   * @throws ParseException Thrown if something wrong in input string
+   *
+   * @param input the input string
+   * @return the result of parsing operation
+   * @throws ParseException thrown if something wrong in input string
    */
   T parse(@NotNull String input) throws ParseException;
 }

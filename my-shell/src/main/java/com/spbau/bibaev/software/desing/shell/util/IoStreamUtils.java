@@ -14,15 +14,16 @@ public class IoStreamUtils {
 
   /**
    * Copy all content of {@code in} stream into output stream. Does not close any stream
-   * @param in The source stream
-   * @param out The destination stream
-   * @throws IOException Thrown if any stream reading/writing throws an exception
+   *
+   * @param in the source stream
+   * @param out the destination stream
+   * @throws IOException thrown if any stream reading/writing throws an exception
    */
   public static void copy(@NotNull InputStream in, @NotNull OutputStream out)
       throws IOException {
     byte[] buffer = new byte[BUFFER_SIZE];
     int readCount = in.read(buffer);
-    while(readCount > 0) {
+    while (readCount > 0) {
       out.write(buffer, 0, readCount);
       readCount = in.read(buffer);
     }

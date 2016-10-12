@@ -3,7 +3,9 @@ package com.spbau.bibaev.software.desing.shell.command;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Something, that can be executed
@@ -18,11 +20,11 @@ public interface Executable {
   /**
    * Methods, that should implement the command logic
    *
-   * @param in  Input Stream
-   * @param out Output Stream
-   * @param err Error Stream
-   * @return Res ult of command execution
-   * @throws IOException Thrown if IO operations with streams failed
+   * @param in input Stream
+   * @param out output Stream
+   * @param err error Stream
+   * @return result of command execution
+   * @throws IOException thrown if IO operations with streams failed
    */
   @NotNull
   ExecutionResult execute(@NotNull InputStream in, @NotNull OutputStream out, @NotNull OutputStream err)

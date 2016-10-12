@@ -1,11 +1,13 @@
 package com.spbau.bibaev.software.desing.shell.command.impl;
 
-import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.command.CommandBase;
+import com.spbau.bibaev.software.desing.shell.command.ExecutionResult;
 import com.spbau.bibaev.software.desing.shell.util.IoStreamUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +22,8 @@ public class DefaultCommand extends CommandBase {
   /**
    * Constructs a new command.
    *
-   * @param name The name of which will executed
-   * @param args The list of parameters which will passed to command
+   * @param name the name of which will executed
+   * @param args the list of parameters which will passed to command
    */
   public DefaultCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
