@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @SuppressWarnings("NullableProblems")
-public class EmptyEnvironmentTestCase {
-  protected Environment getEmptyEnvironment() {
+public interface EmptyEnvironmentTestCase {
+  default Environment getEmptyEnvironment() {
     return new Environment() {
       private final Map<String, String> map = new HashMap<>();
 

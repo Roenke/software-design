@@ -40,8 +40,10 @@ public class AssignCommand extends CommandBase {
    * @return true is {@code expression} can be interpreted as assignment, false otherwise
    */
   public static boolean isAssignExpression(@NotNull String expression) {
+    expression = expression.trim();
     int eqIndex = expression.indexOf('=');
-    return eqIndex != -1 && TextUtil.isIdentifier(expression.substring(0, eqIndex));
+    return eqIndex != -1 && eqIndex != expression.length() - 1
+        && TextUtil.isIdentifier(expression.substring(0, eqIndex));
   }
 
   @NotNull

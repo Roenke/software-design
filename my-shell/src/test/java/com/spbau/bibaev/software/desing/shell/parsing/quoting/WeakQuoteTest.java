@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-public class WeakQuoteTest extends EmptyEnvironmentTestCase {
+public class WeakQuoteTest implements EmptyEnvironmentTestCase {
   @Test
   public void simpleExpression() {
     Quote quote = new WeakQuote("value");

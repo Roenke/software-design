@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class QuoteParserTest extends EmptyEnvironmentTestCase {
+public class QuoteParserTest implements EmptyEnvironmentTestCase {
   private final QuoteParser myParser = new QuoteParser();
 
   @Test
