@@ -45,7 +45,7 @@ public class GrepCommand extends CommandBase {
           return ExecutionResult.SHUTDOWN;
         }
         if (!path.toFile().canRead()) {
-          err.write(String.format("File \"%s\" could not be read", path.toAbsolutePath().toString()).getBytes());
+          err.write(String.format("File \"%s\" could not be read%n", path.toAbsolutePath().toString()).getBytes());
           return ExecutionResult.SHUTDOWN;
         }
 
@@ -69,7 +69,7 @@ public class GrepCommand extends CommandBase {
     PrintStream writer = new PrintStream(out);
     Pattern compiledPattern = createRegexPattern(pattern, ignoreCase, wordsOnly);
     Iterable<String> lines = () -> reader.lines().iterator();
-    int printedUnmatchedAfterMatch = 0;
+    int printedUnmatchedAfterMatch = linesAfterMatch;
     for (String line : lines) {
       if (compiledPattern.matcher(line).find()) {
         printedUnmatchedAfterMatch = 0;
