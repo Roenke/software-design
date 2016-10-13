@@ -54,11 +54,11 @@ public class GrepCommand extends CommandBase {
         Path path = EnvironmentImpl.getInstance().getCurrentDirectory().resolve(filePath);
         if (!path.toFile().exists()) {
           err.write(String.format("File \"%s\" not found%n", path.toAbsolutePath().toString()).getBytes());
-          return ExecutionResult.SHUTDOWN;
+          return ExecutionResult.CONTINUE;
         }
         if (!path.toFile().canRead()) {
           err.write(String.format("File \"%s\" could not be read%n", path.toAbsolutePath().toString()).getBytes());
-          return ExecutionResult.SHUTDOWN;
+          return ExecutionResult.CONTINUE;
         }
 
         try (InputStream is = Files.newInputStream(path)) {
@@ -71,7 +71,7 @@ public class GrepCommand extends CommandBase {
       return ExecutionResult.CONTINUE;
     } catch (ArgumentParserException e) {
       parser.handleError(e);
-      return ExecutionResult.SHUTDOWN;
+      return ExecutionResult.CONTINUE;
     }
   }
 
