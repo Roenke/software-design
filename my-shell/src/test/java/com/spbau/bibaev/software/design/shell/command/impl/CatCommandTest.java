@@ -1,6 +1,6 @@
 package com.spbau.bibaev.software.design.shell.command.impl;
 
-import com.spbau.bibaev.software.design.shell.command.ExecutableTest;
+import com.spbau.bibaev.software.design.shell.command.ExecutableTestCase;
 import com.spbau.bibaev.software.design.shell.command.ExecutionResult;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,7 +16,7 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class CatCommandTest extends ExecutableTest {
+public class CatCommandTest extends ExecutableTestCase {
   @Rule
   public TemporaryFolder myTemporaryFolder = new TemporaryFolder();
 

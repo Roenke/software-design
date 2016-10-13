@@ -9,7 +9,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ExecutableTest {
+public abstract class ExecutableTestCase {
 
   protected static final InputStream EMPTY_INPUT_STREAM = new InputStream() {
     @Override

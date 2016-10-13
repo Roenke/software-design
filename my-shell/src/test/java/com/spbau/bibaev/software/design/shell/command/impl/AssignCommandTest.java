@@ -1,7 +1,7 @@
 package com.spbau.bibaev.software.design.shell.command.impl;
 
 import com.spbau.bibaev.software.design.shell.EnvironmentImpl;
-import com.spbau.bibaev.software.design.shell.command.ExecutableTest;
+import com.spbau.bibaev.software.design.shell.command.ExecutableTestCase;
 import com.spbau.bibaev.software.design.shell.command.ExecutionResult;
 import org.junit.Test;
 
@@ -10,7 +10,7 @@ import java.util.Collections;
 
 import static org.junit.Assert.*;
 
-public class AssignCommandTest extends ExecutableTest {
+public class AssignCommandTest extends ExecutableTestCase {
   @Test
   public void isSimpleAssignTest() {
     assertTrue(AssignCommand.isAssignExpression("x=10"));
