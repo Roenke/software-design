@@ -13,6 +13,23 @@ Installation
 * pwd: `pwd` prints working directory
 * wc: `wc` count number of lines, words, characters in input stream
 * exit: `exit` terminate the interpreter
+* grep: search by a regular expression
+```
+usage: grep [-h] [-i] [-w] [-A n] pattern [file]
+
+Globally search a regular expression and print
+
+positional arguments:
+  pattern                regex pattern
+  file                   path to file
+
+optional arguments:
+  -h, --help             show this help message and exit
+  -i                     ignore case (default: false)
+  -w                     search only entire words (default: false)
+  -A n                   also  print  next   n   lines   after  each  match
+                         (default: 0)
+```
 * any command supported by bash
 
 ## Quoting Support
