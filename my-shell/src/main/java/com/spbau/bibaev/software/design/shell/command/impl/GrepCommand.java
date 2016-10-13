@@ -16,8 +16,20 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * The command for searching by a regular expression
+ *
+ * @author Vitaliy.Bibaev
+ * @see CommandBase
+ */
 public class GrepCommand extends CommandBase {
 
+  /**
+   * Constructs a new instance of {@link GrepCommand}
+   *
+   * @param name the name of command
+   * @param args the list of command arguments
+   */
   public GrepCommand(@NotNull String name, @NotNull List<String> args) {
     super(name, args);
   }
@@ -64,7 +76,7 @@ public class GrepCommand extends CommandBase {
   }
 
   private static void grepInternal(@NotNull InputStream in, @NotNull OutputStream out, String pattern,
-                                              boolean ignoreCase, boolean wordsOnly, int linesAfterMatch) {
+                                   boolean ignoreCase, boolean wordsOnly, int linesAfterMatch) {
     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
     PrintStream writer = new PrintStream(out);
     Pattern compiledPattern = createRegexPattern(pattern, ignoreCase, wordsOnly);
