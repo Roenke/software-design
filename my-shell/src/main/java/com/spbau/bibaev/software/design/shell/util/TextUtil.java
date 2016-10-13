@@ -2,6 +2,8 @@ package com.spbau.bibaev.software.design.shell.util;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 /**
  * Utility methods for working with text and strings
  *
@@ -17,7 +19,7 @@ public class TextUtil {
    * @return the number of words in {@code str}
    */
   public static int getWordCount(@NotNull String str) {
-    return str.split("\\s+").length;
+    return (int) Arrays.stream(str.trim().split("\\s+")).filter(x -> !x.isEmpty()).count();
   }
 
   /**

@@ -6,6 +6,21 @@ import static org.junit.Assert.*;
 
 public class TextUtilTest {
   @Test
+  public void emptyWords() {
+    assertEquals(0, TextUtil.getWordCount(""));
+  }
+
+  @Test
+  public void emptyWithoutTrimming() {
+    assertEquals(0, TextUtil.getWordCount("         "));
+  }
+
+  @Test
+  public void oneWordWithoutTrimming() {
+    assertEquals(1, TextUtil.getWordCount("     hello    "));
+  }
+
+  @Test
   public void wordCount() {
     assertEquals(4, TextUtil.getWordCount("hello     my name\tis"));
   }
