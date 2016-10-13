@@ -56,3 +56,6 @@ group 'com.spbau.bibaev.software.desing.shell'
 
 ## Continuous integration
 [![Build Status](https://travis-ci.org/Roenke/software-design.svg?branch=ha1-shell)](https://travis-ci.org/Roenke/software-design)
+
+## Issue tracker
+https://www.pivotaltracker.com/n/projects/1880427
