@@ -50,5 +50,4 @@ public class InputParser implements Parser<Executable> {
 
     return previous;
   }
-
 }
