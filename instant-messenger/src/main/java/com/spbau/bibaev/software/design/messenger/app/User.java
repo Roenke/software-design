@@ -2,22 +2,26 @@ package com.spbau.bibaev.software.design.messenger.app;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.net.InetAddress;
-
 public class User {
   private final String myName;
-  private final InetAddress myAddress;
+  private final String myHost;
+  private final int myPort;
 
-  public User(@NotNull String name, @NotNull InetAddress address) {
+  public User(@NotNull String name, @NotNull String host, int port) {
     myName = name;
-    myAddress = address;
+    myHost = host;
+    myPort = port;
   }
 
   public String getName() {
     return myName;
   }
+  
+  public String getHost() {
+    return myHost;
+  }
 
-  public InetAddress getAddress() {
-    return myAddress;
+  public int getPort() {
+    return myPort;
   }
 }

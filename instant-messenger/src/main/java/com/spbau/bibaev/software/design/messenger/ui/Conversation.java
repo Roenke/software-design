@@ -10,7 +10,7 @@ public class Conversation {
   private final List<String> myMessages;
   @Override
   public String toString() {
-    return "conv";
+    return myUser.getName();
   }
 
   public Conversation(@NotNull User user, @NotNull List<String> messages) {

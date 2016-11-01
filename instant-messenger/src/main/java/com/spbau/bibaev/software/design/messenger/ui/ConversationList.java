@@ -13,8 +13,10 @@ public class ConversationList extends JList<Conversation> {
   private final List<Conversation> myConversations = new ArrayList<>();
   public ConversationList() {
     super();
+    setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     try {
       myConversations.add(new Conversation(new User("Bob", InetAddress.getByAddress("localhost", new byte[] {127, 0, 0, 1})), Collections.emptyList()));
+      myConversations.add(new Conversation(new User("Alice", InetAddress.getByAddress(new byte[] {127, 0, 0, 1})), Collections.emptyList()));
     } catch (UnknownHostException e) {
       throw new RuntimeException();
     }

@@ -2,17 +2,14 @@ package com.spbau.bibaev.software.design.messenger.ui;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 public class MainWindow extends JFrame {
   private final ConversationList myConversationList = new ConversationList();
 
   public MainWindow() {
     super("Instant messenger");
-    setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     addWindowListener(new MyWindowClosedListener());
     setPreferredSize(new Dimension(500, 500));
     JTextArea textArea = new JTextArea("Hello!");
@@ -34,10 +31,21 @@ public class MainWindow extends JFrame {
       public void mouseClicked(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2) {
           int clickedIndex = myConversationList.locationToIndex(e.getPoint());
-          if(clickedIndex != -1) {
+          if (clickedIndex != -1) {
             Conversation conversation = myConversationList.getModel().getElementAt(clickedIndex);
             new DialogWindow(conversation).setVisible(true);
           }
+        }
+      }
+    });
+
+    myConversationList.addKeyListener(new KeyAdapter() {
+      @Override
+      public void keyReleased(KeyEvent e) {
+        int index = myConversationList.getSelectedIndex();
+        if (index != -1 && e.getKeyCode() == KeyEvent.VK_ENTER) {
+          Conversation conversation = myConversationList.getModel().getElementAt(index);
+          new DialogWindow(conversation).setVisible(true);
         }
       }
     });
@@ -45,6 +53,11 @@ public class MainWindow extends JFrame {
   }
 
   private static class MyWindowClosedListener extends WindowAdapter {
+    @Override
+    public void windowClosing(WindowEvent e) {
+      super.windowClosing(e);
+    }
+
     @Override
     public void windowClosed(WindowEvent e) {
       super.windowClosed(e);
