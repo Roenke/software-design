@@ -13,17 +13,23 @@ public class MainWindow extends JFrame {
     addWindowListener(new MyWindowClosedListener());
     setPreferredSize(new Dimension(500, 500));
     JTextArea textArea = new JTextArea("Hello!");
+
     textArea.setLineWrap(true);
     textArea.setEditable(false);
+
     Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
     int x = (int) ((dimension.getWidth() / 2 - 250));
     int y = (int) ((dimension.getHeight() / 2 - 250));
+
     setLocation(x, y);
+
     textArea.setBorder(BorderFactory.createLineBorder(Color.black, 2));
+
     JPanel pane = new JPanel(new BorderLayout());
     pane.add(new JLabel("Conversations", SwingConstants.CENTER), BorderLayout.NORTH);
     pane.add(myConversationList, BorderLayout.CENTER);
     pane.add(new JButton("Settings"), BorderLayout.SOUTH);
+
     getContentPane().add(pane);
 
     myConversationList.addMouseListener(new MouseAdapter() {

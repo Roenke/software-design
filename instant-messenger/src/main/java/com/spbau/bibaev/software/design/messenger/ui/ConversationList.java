@@ -3,23 +3,18 @@ package com.spbau.bibaev.software.design.messenger.ui;
 import com.spbau.bibaev.software.design.messenger.app.User;
 
 import javax.swing.*;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class ConversationList extends JList<Conversation> {
   private final List<Conversation> myConversations = new ArrayList<>();
+
   public ConversationList() {
     super();
     setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    try {
-      myConversations.add(new Conversation(new User("Bob", InetAddress.getByAddress("localhost", new byte[] {127, 0, 0, 1})), Collections.emptyList()));
-      myConversations.add(new Conversation(new User("Alice", InetAddress.getByAddress(new byte[] {127, 0, 0, 1})), Collections.emptyList()));
-    } catch (UnknownHostException e) {
-      throw new RuntimeException();
-    }
+    myConversations.add(new Conversation(new User("Bob", "localhost", 8999), Collections.emptyList()));
+    myConversations.add(new Conversation(new User("Alice", "localhost", 23423), Collections.emptyList()));
     setModel(new DefaultListModel<Conversation>() {
       @Override
       public int getSize() {

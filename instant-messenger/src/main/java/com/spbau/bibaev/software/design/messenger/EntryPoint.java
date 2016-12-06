@@ -12,7 +12,7 @@ public class EntryPoint {
   public static void main(String[] args) {
     Application.getInstance().registerService(MessageSendingService.class,
         new MessageSendingService(SEND_THREAD_COUNT));
-    Application.getInstance().registerService(MessageReceiverService.class, new MessageReceiverService());
+    Application.getInstance().registerService(MessageReceiverService.class, new MessageReceiverService(2));
     MainWindow mainWindow = new MainWindow();
     mainWindow.setVisible(true);
   }
