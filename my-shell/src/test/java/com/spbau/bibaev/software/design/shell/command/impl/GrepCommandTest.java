@@ -83,6 +83,24 @@ public class GrepCommandTest extends ExecutableTestCase {
   }
 
   @Test
+  public void entireWordKeyUsingWithFile() throws IOException {
+    final Path tempFile = Files.createTempFile("test", "regex");
+    try(OutputStream os = Files.newOutputStream(tempFile)) {
+      PrintStream printer = new PrintStream(os);
+      printer.println("first");
+      printer.println("plug");
+      printer.println("plugin");
+    }
+    String regex = "plug";
+    ExecutionResult result = new GrepCommand("grep",
+        Arrays.asList("-w", regex, tempFile.toAbsolutePath().toString()))
+        .execute(new ByteArrayInputStream(new byte[0]), myOutputStream, myErrorStream);
+    assertEquals(ExecutionResult.CONTINUE, result);
+    assertEquals("plug", getOutputString().trim());
+    assertTrue(getErrorString().trim().isEmpty());
+  }
+
+  @Test
   public void regexUsage() throws IOException {
     String line = "aa bb cc ee dd";
     ExecutionResult result = new GrepCommand("grep", Collections.singletonList("a*\\s*b+\\s[bed\\s]*"))

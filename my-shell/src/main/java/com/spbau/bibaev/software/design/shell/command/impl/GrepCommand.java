@@ -64,9 +64,9 @@ public class GrepCommand extends CommandBase {
         try (InputStream is = Files.newInputStream(path)) {
           grepInternal(is, out, pattern, ignoreCase, wordsOnly, linesAfterMatch);
         }
+      } else {
+        grepInternal(in, out, pattern, ignoreCase, wordsOnly, linesAfterMatch);
       }
-
-      grepInternal(in, out, pattern, ignoreCase, wordsOnly, linesAfterMatch);
 
       return ExecutionResult.CONTINUE;
     } catch (ArgumentParserException e) {
