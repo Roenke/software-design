@@ -3,6 +3,9 @@ package com.spbau.bibaev.software.design.shell.parsing.quoting;
 import com.spbau.bibaev.software.design.shell.Environment;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+
 /**
  * The quote which replace all entries of variables for their values in
  * current environment
@@ -15,15 +18,22 @@ public class WeakQuote implements Quote {
   private static final char VARIABLE_PREFIX = '$';
   private final String myString;
 
-  /** Constructs a new weak quote
-   * @param string The string for substitution
-   */
-  public WeakQuote(@NotNull String string) {
+  private WeakQuote(@NotNull String string) {
     myString = string;
   }
 
   /**
+   * Constructs a new weak quote or get existed (if it was created earlier and not collected yet)
+   *
+   * @param string The string for substitution
+   */
+  public static Quote create(@NotNull String string) {
+    return MyWeakQuotePool.Holder.POOL.get(string);
+  }
+
+  /**
    * Replace all entries of {@code environment} variables for their values
+   *
    * @param environment The current execution environment
    * @return The string after all substitutions
    */
@@ -49,5 +59,17 @@ public class WeakQuote implements Quote {
     }
 
     return sb.toString();
+  }
+
+  private static class MyWeakQuotePool {
+    private final Map<String, Quote> myQuoteCache = new WeakHashMap<>();
+
+    private static class Holder {
+      static final MyWeakQuotePool POOL = new MyWeakQuotePool();
+    }
+
+    Quote get(@NotNull String string) {
+      return myQuoteCache.computeIfAbsent(string, WeakQuote::new);
+    }
   }
 }

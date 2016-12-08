@@ -45,7 +45,7 @@ class QuoteParser implements Parser<List<List<Quote>>> {
         CompositeQuote quote = new CompositeQuote();
         for (MyQuoteDescriptor descriptor : wordQuotes) {
           if (descriptor.from != lastProceedIx) {
-            quote.append(new WeakQuote(word.substring(lastProceedIx, descriptor.from)));
+            quote.append(WeakQuote.create(word.substring(lastProceedIx, descriptor.from)));
           }
 
           quote.append(descriptor.toQuote());
@@ -53,7 +53,7 @@ class QuoteParser implements Parser<List<List<Quote>>> {
         }
 
         if (lastProceedIx < word.length()) {
-          quote.append(new WeakQuote(word.substring(lastProceedIx)));
+          quote.append(WeakQuote.create(word.substring(lastProceedIx)));
         }
 
         commandResult.add(quote);
@@ -133,7 +133,7 @@ class QuoteParser implements Parser<List<List<Quote>>> {
     Quote toQuote() {
       String body = myString.substring(from + 1, to);
       if (type == MyQuoteType.WEAK) {
-        return new WeakQuote(body);
+        return WeakQuote.create(body);
       }
 
       return new StrongQuote(body);
