@@ -1,28 +1,32 @@
 package com.spbau.bibaev.software.design.messenger.ui;
 
 import com.spbau.bibaev.software.design.messenger.app.Application;
+import com.spbau.bibaev.software.design.messenger.app.NamedUser;
+import com.spbau.bibaev.software.design.messenger.app.Settings;
+import com.spbau.bibaev.software.design.messenger.app.UserImpl;
 import com.spbau.bibaev.software.design.messenger.client.Message;
 import com.spbau.bibaev.software.design.messenger.client.MessageSendingCallback;
 import com.spbau.bibaev.software.design.messenger.client.MessageSendingService;
 import com.spbau.bibaev.software.design.messenger.client.TextMessage;
+import com.spbau.bibaev.software.design.messenger.server.MessageReceiverService;
+import com.spbau.bibaev.software.design.messenger.server.ReceiverListener;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.InetAddress;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DialogWindow extends JFrame {
+class DialogWindow extends JFrame {
   private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM hh:mm");
-  private final Conversation myConversation;
   private final JTextArea myTextArea = new JTextArea();
-  private final JButton mySendButton = new JButton("Send");
   private final JTextField myMessageTextField = new JTextField();
+  private volatile NamedUser myUser;
 
-  public DialogWindow(@NotNull Conversation conversation) throws HeadlessException {
-    super(conversation.getUserName());
-    myConversation = conversation;
+  DialogWindow(@NotNull InetAddress address, int port) throws HeadlessException {
+    super(String.format("%s: %d", address, port));
     myTextArea.setEditable(false);
     myMessageTextField.setToolTipText("Enter your message here");
 
@@ -33,22 +37,43 @@ public class DialogWindow extends JFrame {
     JPanel southPane = new JPanel(new BorderLayout());
     southPane.add(new JSeparator(JSeparator.HORIZONTAL));
     southPane.add(myMessageTextField, BorderLayout.CENTER);
-    southPane.add(mySendButton, BorderLayout.EAST);
+
+    JButton sendButton = new JButton("Send");
+    southPane.add(sendButton, BorderLayout.EAST);
+    myUser = new UserImpl("unknown", address, port);
+
+    MessageReceiverService receiverService = Application.getInstance().getService(MessageReceiverService.class);
+    receiverService.addListener(new ReceiverListener() {
+      @Override
+      public void messageReceived(@NotNull Message message) {
+        if (!myUser.equals(message.getUser())) {
+          return;
+        }
+
+        myUser = message.getUser();
+        if (message instanceof TextMessage) {
+          TextMessage textMessage = (TextMessage) message;
+          SwingUtilities.invokeLater(
+              () -> showMessage(myUser.getName(), textMessage.getDate(), textMessage.getText()));
+        } else {
+          SwingUtilities.invokeLater(
+              () -> showMessage("messenger", new Date(), "unknown message type :("));
+        }
+      }
+    });
 
     MessageSendingService sendingService = Application.getInstance().getService(MessageSendingService.class);
 
-    mySendButton.addActionListener(e -> {
+    sendButton.addActionListener(e -> {
       final String text = myMessageTextField.getText();
       if (!text.trim().isEmpty()) {
         Date date = new Date();
-        final TextMessage message = new TextMessage(conversation.getUser(), date, text);
-        sendingService.sendMessage("kdlfgjlkdfg", message, new MessageSendingCallback() {
+        final TextMessage message = new TextMessage(myUser, date, text);
+        String myName = Settings.getInstance().getName();
+        sendingService.sendMessage(myName, message, new MessageSendingCallback() {
           @Override
           public void onSuccess() {
-            String header = String.format("%s(%s): \n", message.getUser().getName(),
-                DATE_FORMAT.format(message.getDate()));
-            myTextArea.append(header);
-            myTextArea.append(message.getText());
+            SwingUtilities.invokeLater(() -> showMessage(myName, date, text));
           }
 
           @Override
@@ -61,11 +86,15 @@ public class DialogWindow extends JFrame {
 
     pane.add(southPane, BorderLayout.SOUTH);
     getContentPane().add(pane);
+    getRootPane().setDefaultButton(sendButton);
 
     pack();
   }
 
-  private static class MyMessage {
-
+  private void showMessage(@NotNull String author, @NotNull Date date, @NotNull String message) {
+    String header = String.format("%s(%s): \n", author,
+        DATE_FORMAT.format(date));
+    myTextArea.append(header);
+    myTextArea.append(message);
   }
 }

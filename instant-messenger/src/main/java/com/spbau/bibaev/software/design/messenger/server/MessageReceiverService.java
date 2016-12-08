@@ -1,7 +1,8 @@
 package com.spbau.bibaev.software.design.messenger.server;
 
+import com.spbau.bibaev.software.design.messenger.app.NamedUser;
 import com.spbau.bibaev.software.design.messenger.app.Service;
-import com.spbau.bibaev.software.design.messenger.app.User;
+import com.spbau.bibaev.software.design.messenger.app.UserImpl;
 import com.spbau.bibaev.software.design.messenger.client.Message;
 import com.spbau.bibaev.software.design.messenger.client.MessageType;
 import com.spbau.bibaev.software.design.messenger.client.TextMessage;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
@@ -55,7 +57,7 @@ public class MessageReceiverService implements Service {
     }
   }
 
-  public void addListener(@NotNull MessageType type, @NotNull ReceiverListener listener) {
+  public void addListener(@NotNull ReceiverListener listener) {
     myListeners.add(listener);
   }
 
@@ -77,7 +79,7 @@ public class MessageReceiverService implements Service {
         while (!socket.isClosed()) {
           Socket clientSocket = socket.accept();
           final int clientPort = clientSocket.getPort();
-          final String address = clientSocket.getInetAddress().toString();
+          final InetAddress address = clientSocket.getInetAddress();
           DataInputStream in = new DataInputStream(clientSocket.getInputStream());
           DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
 
@@ -85,7 +87,7 @@ public class MessageReceiverService implements Service {
           int messageType = in.readInt();
           int dataLength = in.readInt();
 
-          final User user = new User(userName, address, clientPort);
+          final NamedUser user = new UserImpl(userName, address, clientPort);
 
           byte[] data = new byte[dataLength];
           IOUtils.readFully(in, data);

@@ -7,17 +7,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class MainWindow extends JFrame {
-  private final String myName = "default";
   private final JLabel myInformationLabel = new JLabel();
 
   public MainWindow() {
     super("Instant messenger");
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    addWindowListener(new MyWindowClosedListener());
 
     setLocationRelativeTo(null);
 
@@ -32,6 +28,11 @@ public class MainWindow extends JFrame {
     JPanel buttonsPane = new JPanel(new GridLayout(2, 1));
     final JButton sendMessageButton = new JButton("Send message");
     final JButton settingsButton = new JButton("Settings");
+
+    sendMessageButton.addActionListener(e -> {
+      final ConnectionDialog dialog = new ConnectionDialog();
+      dialog.setVisible(true);
+    });
 
     settingsButton.addActionListener(e -> {
       final SettingsWindow settingsWindow = new SettingsWindow();
@@ -50,18 +51,6 @@ public class MainWindow extends JFrame {
     pack();
   }
 
-  private static class MyWindowClosedListener extends WindowAdapter {
-    @Override
-    public void windowClosing(WindowEvent e) {
-      super.windowClosing(e);
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-      super.windowClosed(e);
-    }
-  }
-
   private void updateInformation(@NotNull Settings settings) {
     if (SwingUtilities.isEventDispatchThread()) {
       final String info = String.format("Current settings: name = %s; port = %d",
@@ -71,5 +60,4 @@ public class MainWindow extends JFrame {
       SwingUtilities.invokeLater(() -> updateInformation(settings));
     }
   }
-
 }

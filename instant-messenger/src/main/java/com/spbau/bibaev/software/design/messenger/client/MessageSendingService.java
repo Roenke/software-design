@@ -1,7 +1,7 @@
 package com.spbau.bibaev.software.design.messenger.client;
 
-import com.spbau.bibaev.software.design.messenger.app.Service;
 import com.spbau.bibaev.software.design.messenger.app.User;
+import com.spbau.bibaev.software.design.messenger.app.Service;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,9 @@ public class MessageSendingService implements Service {
     myThreadPool = Executors.newFixedThreadPool(threadCount);
   }
 
-  public void sendMessage(@NotNull String fromName, @NotNull Message message, @Nullable MessageSendingCallback callback) {
+  public void sendMessage(@NotNull String fromName,
+                          @NotNull Message message,
+                          @Nullable MessageSendingCallback callback) {
     myThreadPool.execute(new MySendMessageTask(fromName, message, callback == null ? EMPTY_CALLBACK : callback));
   }
 
@@ -60,12 +62,11 @@ public class MessageSendingService implements Service {
     private void send() throws IOException {
       try (Socket socket = new Socket()) {
         User receiver = myMessage.getUser();
-        socket.connect(new InetSocketAddress(receiver.getHost(), receiver.getPort()), CONNECTION_TIMEOUT);
+        socket.connect(new InetSocketAddress(receiver.getAddress(), receiver.getPort()), CONNECTION_TIMEOUT);
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 
         final byte[] data = myMessage.getData();
         out.writeUTF(myName);
-        out.writeInt(myMessage.getType().ordinal());
         out.write(data.length);
 
         IOUtils.copyLarge(new ByteArrayInputStream(data), out);

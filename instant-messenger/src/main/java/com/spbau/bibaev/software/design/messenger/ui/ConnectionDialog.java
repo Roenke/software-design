@@ -7,21 +7,26 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
-class SettingsWindow extends JFrame {
+/**
+ * @author Vitaliy.Bibaev
+ */
+class ConnectionDialog extends JFrame {
   private static final int PADDING_SIZE = 15;
-  private final JTextField myUsernameTextField;
+  private final JTextField myAddressTextField;
   private final JTextField myPortTextField;
-  private final JButton mySaveButton = new JButton("Save");
+  private final JButton myOpenChatButton = new JButton("Open");
 
-  SettingsWindow() throws HeadlessException {
-    super("Settings");
+  ConnectionDialog() throws HeadlessException {
+    super("Open dialog");
 
     final Settings settings = Settings.getInstance();
-    myUsernameTextField = new JTextField(settings.getName(), 12);
-    myPortTextField = new JTextField(String.valueOf(settings.getPort()), 12);
+    myAddressTextField = new JTextField(settings.getName(), 15);
+    myPortTextField = new JTextField(String.valueOf(settings.getPort()), 15);
     setDefaultCloseOperation(HIDE_ON_CLOSE);
-    JLabel usernameLabel = new JLabel("UserImpl Name: ");
+    JLabel usernameLabel = new JLabel("Address:  ");
     JLabel portLabel = new JLabel("Port: ");
 
     JPanel configPane = new JPanel();
@@ -36,10 +41,16 @@ class SettingsWindow extends JFrame {
       }
     });
 
-    mySaveButton.addActionListener(e -> {
-      Settings.getInstance().setName(myUsernameTextField.getText());
-      Settings.getInstance().setPort(Integer.parseInt(myPortTextField.getText()));
-      dispose();
+    myOpenChatButton.addActionListener(e -> {
+      String address = myAddressTextField.getText();
+      int port = Integer.parseInt(myPortTextField.getText());
+      try {
+        final InetAddress inetAddress = InetAddress.getByName(address);
+        final DialogWindow dialogWindow = new DialogWindow(inetAddress, port);
+        dialogWindow.setVisible(true);
+      } catch (UnknownHostException e1) {
+        e1.printStackTrace();
+      }
     });
 
     layout.setHorizontalGroup(layout.createSequentialGroup()
@@ -47,23 +58,23 @@ class SettingsWindow extends JFrame {
             .addComponent(usernameLabel)
             .addComponent(portLabel))
         .addGroup(layout.createParallelGroup()
-            .addComponent(myUsernameTextField)
+            .addComponent(myAddressTextField)
             .addComponent(myPortTextField)));
 
     layout.setVerticalGroup(layout.createSequentialGroup()
         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
             .addComponent(usernameLabel)
-            .addComponent(myUsernameTextField))
+            .addComponent(myAddressTextField))
         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
             .addComponent(portLabel)
             .addComponent(myPortTextField)));
 
-    getRootPane().setDefaultButton(mySaveButton);
+    getRootPane().setDefaultButton(myOpenChatButton);
     JPanel pane = new JPanel();
     pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
     pane.add(configPane);
-    pane.add(mySaveButton);
+    pane.add(myOpenChatButton);
     pane.setBorder(BorderFactory.createEmptyBorder(PADDING_SIZE, PADDING_SIZE, PADDING_SIZE, PADDING_SIZE));
 
     getContentPane().add(pane);
@@ -81,11 +92,11 @@ class SettingsWindow extends JFrame {
 
     @Override
     public boolean shouldYieldFocus(JComponent input) {
-      final boolean before = mySaveButton.isEnabled();
+      final boolean before = myOpenChatButton.isEnabled();
       final boolean result = verify(input);
       if (result != before) {
         input.setForeground(result ? Color.black : Color.red);
-        mySaveButton.setEnabled(result);
+        myOpenChatButton.setEnabled(result);
       }
 
       return true;
