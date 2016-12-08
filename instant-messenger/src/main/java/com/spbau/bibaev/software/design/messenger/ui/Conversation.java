@@ -21,4 +21,8 @@ public class Conversation {
   public String getUserName() {
     return myUser.getName();
   }
+
+  public User getUser() {
+    return myUser;
+  }
 }

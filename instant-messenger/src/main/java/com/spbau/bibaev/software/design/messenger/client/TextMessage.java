@@ -3,30 +3,24 @@ package com.spbau.bibaev.software.design.messenger.client;
 import com.spbau.bibaev.software.design.messenger.app.User;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
+import java.util.Date;
 
-public class TextMessage implements Message {
+public class TextMessage extends AbstractMessage {
   private final String myText;
-  private final User myUser;
 
-  public TextMessage(@NotNull User user, @NotNull String text) {
-    myUser = user;
+  public TextMessage(@NotNull User user, @NotNull Date date, @NotNull String text) {
+    super(user, date, MessageType.TEXT);
     myText = text;
   }
 
+  @NotNull
   @Override
-  public @NotNull User getReceiver() {
-    return myUser;
+  public byte[] getData() {
+    return myText.getBytes();
   }
 
-  @Override
-  public @NotNull MessageType getType() {
-    return MessageType.TEXT;
-  }
-
-  @Override
-  public @NotNull InputStream getData() {
-    return new ByteArrayInputStream(myText.getBytes());
+  @NotNull
+  public String getText() {
+    return myText;
   }
 }

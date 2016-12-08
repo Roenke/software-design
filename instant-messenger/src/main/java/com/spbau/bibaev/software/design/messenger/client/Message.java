@@ -3,15 +3,17 @@ package com.spbau.bibaev.software.design.messenger.client;
 import com.spbau.bibaev.software.design.messenger.app.User;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.InputStream;
+import java.util.Date;
 
 public interface Message {
   @NotNull
-  User getReceiver();
+  User getUser();
+
+  Date getDate();
 
   @NotNull
   MessageType getType();
 
   @NotNull
-  InputStream getData();
+  byte[] getData();
 }

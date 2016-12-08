@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Application {
-  private Map<Class<? extends Service>, Service> myServices= new HashMap<Class<? extends Service>, Service>();
+  private Map<Class<? extends Service>, Service> myServices = new HashMap<Class<? extends Service>, Service>();
 
   private static class Holder {
     static final Application INSTANCE = new Application();

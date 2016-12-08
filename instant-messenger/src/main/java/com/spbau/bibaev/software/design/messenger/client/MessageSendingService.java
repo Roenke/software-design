@@ -6,6 +6,7 @@ import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -31,23 +32,26 @@ public class MessageSendingService implements Service {
     myThreadPool = Executors.newFixedThreadPool(threadCount);
   }
 
-  public void sendMessage(@NotNull Message message, @Nullable MessageSendingCallback callback) {
-    myThreadPool.execute(new MySendMessageTask(message, callback == null ? EMPTY_CALLBACK : callback));
+  public void sendMessage(@NotNull String fromName, @NotNull Message message, @Nullable MessageSendingCallback callback) {
+    myThreadPool.execute(new MySendMessageTask(fromName, message, callback == null ? EMPTY_CALLBACK : callback));
   }
 
   private static class MySendMessageTask implements Runnable {
     private final Message myMessage;
+    private final String myName;
     private final MessageSendingCallback myCallback;
 
-    MySendMessageTask(@NotNull Message message, @NotNull MessageSendingCallback callback) {
+    MySendMessageTask(@NotNull String name, @NotNull Message message, @NotNull MessageSendingCallback callback) {
       myMessage = message;
       myCallback = callback;
+      myName = name;
     }
 
     @Override
     public void run() {
       try {
         send();
+        myCallback.onSuccess();
       } catch (IOException e) {
         myCallback.onFail(myMessage, e);
       }
@@ -55,11 +59,16 @@ public class MessageSendingService implements Service {
 
     private void send() throws IOException {
       try (Socket socket = new Socket()) {
-        User receiver = myMessage.getReceiver();
+        User receiver = myMessage.getUser();
         socket.connect(new InetSocketAddress(receiver.getHost(), receiver.getPort()), CONNECTION_TIMEOUT);
         DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+
+        final byte[] data = myMessage.getData();
+        out.writeUTF(myName);
         out.writeInt(myMessage.getType().ordinal());
-        IOUtils.copyLarge(myMessage.getData(), out);
+        out.write(data.length);
+
+        IOUtils.copyLarge(new ByteArrayInputStream(data), out);
       }
     }
   }
