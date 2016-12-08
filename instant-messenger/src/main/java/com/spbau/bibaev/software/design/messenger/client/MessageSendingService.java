@@ -1,25 +1,25 @@
 package com.spbau.bibaev.software.design.messenger.client;
 
-import com.spbau.bibaev.software.design.messenger.app.User;
 import com.spbau.bibaev.software.design.messenger.app.Service;
+import com.spbau.bibaev.software.design.messenger.app.Settings;
+import com.spbau.bibaev.software.design.messenger.common.AnswerCodes;
+import com.spbau.bibaev.software.design.messenger.ex.ProtocolException;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class MessageSendingService implements Service {
-  private static final int CONNECTION_TIMEOUT = (int) TimeUnit.SECONDS.toMillis(5);
   private static final MessageSendingCallback EMPTY_CALLBACK = new MessageSendingCallback() {
     @Override
-    public void onSuccess() {
+    public void onSuccess(@NotNull Message message) {
     }
 
     @Override
@@ -53,23 +53,29 @@ public class MessageSendingService implements Service {
     public void run() {
       try {
         send();
-        myCallback.onSuccess();
+        myCallback.onSuccess(myMessage);
       } catch (IOException e) {
         myCallback.onFail(myMessage, e);
       }
     }
 
     private void send() throws IOException {
-      try (Socket socket = new Socket()) {
-        User receiver = myMessage.getUser();
-        socket.connect(new InetSocketAddress(receiver.getAddress(), receiver.getPort()), CONNECTION_TIMEOUT);
-        DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+      try (Socket socket = new Socket(myMessage.getUser().getAddress(), myMessage.getUser().getPort());
+           DataInputStream in = new DataInputStream(socket.getInputStream());
+           DataOutputStream out = new DataOutputStream(socket.getOutputStream());) {
 
         final byte[] data = myMessage.getData();
+
         out.writeUTF(myName);
-        out.write(data.length);
+        out.writeInt(Settings.getInstance().getPort());
+        out.writeInt(data.length);
 
         IOUtils.copyLarge(new ByteArrayInputStream(data), out);
+        final int result = in.readInt();
+
+        if (result != AnswerCodes.OK) {
+          throw new ProtocolException(result);
+        }
       }
     }
   }

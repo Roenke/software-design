@@ -40,12 +40,7 @@ public class EntryPoint {
 
       settings.addListener((setts, propertyName) -> {
         if ("port".equals(propertyName)) {
-          try {
-            receiverService.detachAll();
-            receiverService.attach(setts.getPort());
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
+          receiverService.attach(setts.getPort());
         }
       });
 

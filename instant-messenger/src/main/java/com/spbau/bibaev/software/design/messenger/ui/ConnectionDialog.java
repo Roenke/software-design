@@ -1,7 +1,9 @@
 package com.spbau.bibaev.software.design.messenger.ui;
 
-import com.spbau.bibaev.software.design.messenger.app.Settings;
+import com.spbau.bibaev.software.design.messenger.EntryPoint;
+import com.spbau.bibaev.software.design.messenger.client.Message;
 import com.spbau.bibaev.software.design.messenger.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,9 +24,9 @@ class ConnectionDialog extends JFrame {
   ConnectionDialog() throws HeadlessException {
     super("Open dialog");
 
-    final Settings settings = Settings.getInstance();
-    myAddressTextField = new JTextField(settings.getName(), 15);
-    myPortTextField = new JTextField(String.valueOf(settings.getPort()), 15);
+    myAddressTextField = new JTextField("localhost", 15);
+    myPortTextField = new JTextField(String.valueOf(EntryPoint.DEFAULT_PORT), 15);
+
     setDefaultCloseOperation(HIDE_ON_CLOSE);
     JLabel usernameLabel = new JLabel("Address:  ");
     JLabel portLabel = new JLabel("Port: ");
@@ -48,6 +50,7 @@ class ConnectionDialog extends JFrame {
         final InetAddress inetAddress = InetAddress.getByName(address);
         final DialogWindow dialogWindow = new DialogWindow(inetAddress, port);
         dialogWindow.setVisible(true);
+        dispose();
       } catch (UnknownHostException e1) {
         e1.printStackTrace();
       }

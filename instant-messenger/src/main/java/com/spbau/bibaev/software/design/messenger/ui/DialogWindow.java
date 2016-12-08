@@ -32,6 +32,7 @@ class DialogWindow extends JFrame {
 
     setDefaultCloseOperation(HIDE_ON_CLOSE);
     setPreferredSize(new Dimension(500, 500));
+
     JPanel pane = new JPanel(new BorderLayout());
     pane.add(myTextArea, BorderLayout.CENTER);
     JPanel southPane = new JPanel(new BorderLayout());
@@ -46,55 +47,67 @@ class DialogWindow extends JFrame {
     receiverService.addListener(new ReceiverListener() {
       @Override
       public void messageReceived(@NotNull Message message) {
-        if (!myUser.equals(message.getUser())) {
-          return;
-        }
-
-        myUser = message.getUser();
-        if (message instanceof TextMessage) {
-          TextMessage textMessage = (TextMessage) message;
-          SwingUtilities.invokeLater(
-              () -> showMessage(myUser.getName(), textMessage.getDate(), textMessage.getText()));
-        } else {
-          SwingUtilities.invokeLater(
-              () -> showMessage("messenger", new Date(), "unknown message type :("));
+        if (myUser.equals(message.getUser())) {
+          addMessage(message);
         }
       }
     });
-
-    MessageSendingService sendingService = Application.getInstance().getService(MessageSendingService.class);
 
     sendButton.addActionListener(e -> {
       final String text = myMessageTextField.getText();
       if (!text.trim().isEmpty()) {
         Date date = new Date();
         final TextMessage message = new TextMessage(myUser, date, text);
-        String myName = Settings.getInstance().getName();
-        sendingService.sendMessage(myName, message, new MessageSendingCallback() {
-          @Override
-          public void onSuccess() {
-            SwingUtilities.invokeLater(() -> showMessage(myName, date, text));
-          }
+        Application.getInstance().getService(MessageSendingService.class)
+            .sendMessage(Settings.getInstance().getName(), message, new MessageSendingCallback() {
+              @Override
+              public void onSuccess(@NotNull Message message) {
+                showMessage(Settings.getInstance().getName(), message.getDate(), text);
+              }
 
-          @Override
-          public void onFail(@NotNull Message message, @NotNull Throwable e) {
-            myTextArea.append("failed: " + e.toString());
-          }
-        });
+              @Override
+              public void onFail(@NotNull Message message, @NotNull Throwable e) {
+                myTextArea.append("failed: " + e.toString());
+              }
+            });
       }
     });
 
     pane.add(southPane, BorderLayout.SOUTH);
     getContentPane().add(pane);
     getRootPane().setDefaultButton(sendButton);
+    setLocationRelativeTo(null);
 
     pack();
   }
 
+  DialogWindow(@NotNull Message message) {
+    this(message.getUser().getAddress(), message.getUser().getPort());
+    addMessage(message);
+  }
+
+  private void addMessage(@NotNull Message message) {
+    if (myUser != null && !myUser.equals(message.getUser())) {
+      return;
+    }
+
+    myUser = message.getUser();
+    if (message instanceof TextMessage) {
+      TextMessage textMessage = (TextMessage) message;
+      showMessage(myUser.getName(), textMessage.getDate(), textMessage.getText());
+    } else {
+      showMessage("messenger", new Date(), "unknown message type :(");
+    }
+  }
+
   private void showMessage(@NotNull String author, @NotNull Date date, @NotNull String message) {
-    String header = String.format("%s(%s): \n", author,
-        DATE_FORMAT.format(date));
-    myTextArea.append(header);
-    myTextArea.append(message);
+    if (SwingUtilities.isEventDispatchThread()) {
+      String header = String.format("%s(%s): %n", author,
+          DATE_FORMAT.format(date));
+      myTextArea.append(header);
+      myTextArea.append(String.format("%s%n", message));
+    } else {
+      SwingUtilities.invokeLater(() -> showMessage(author, date, message));
+    }
   }
 }
