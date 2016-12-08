@@ -41,6 +41,8 @@ public class MessageReceiverService implements Service {
       final ServerSocket socket = myServerSocket;
       new Thread(() -> {
         while (!socket.isClosed()) {
+          final NamedUser user;
+          final byte[] data;
           try (Socket clientSocket = socket.accept();
                DataInputStream in = new DataInputStream(clientSocket.getInputStream());
                DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream())) {
@@ -51,16 +53,18 @@ public class MessageReceiverService implements Service {
             final int clientPort = in.readInt();
             int dataLength = in.readInt();
 
-            final NamedUser user = new UserImpl(userName, address, clientPort);
+            user = new UserImpl(userName, address, clientPort);
 
-            byte[] data = new byte[dataLength];
+            data = new byte[dataLength];
             IOUtils.readFully(in, data);
 
-            fireMessageReceived(new TextMessage(user, new Date(), new String(data)));
 
             out.writeInt(AnswerCodes.OK);
           } catch (IOException ignored) {
+            continue;
           }
+
+          fireMessageReceived(new TextMessage(user, new Date(), new String(data)));
         }
       }).start();
     } catch (IOException ignored) {
