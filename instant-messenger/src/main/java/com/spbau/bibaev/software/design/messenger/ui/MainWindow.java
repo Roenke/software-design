@@ -48,7 +48,11 @@ public class MainWindow extends JFrame {
 
     sendMessageButton.addActionListener(e -> {
       final ConnectionDialog dialog = new ConnectionDialog(MainWindow.this);
-      dialog.setVisible(true);
+      final User user = dialog.showDialog();
+      if (user != null) {
+        final DialogWindow dialogWindow = new DialogWindow(user.getAddress(), user.getPort());
+        dialogWindow.setVisible(true);
+      }
     });
 
     settingsButton.addActionListener(e -> {

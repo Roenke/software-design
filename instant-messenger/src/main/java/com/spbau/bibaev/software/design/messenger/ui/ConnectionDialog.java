@@ -1,8 +1,10 @@
 package com.spbau.bibaev.software.design.messenger.ui;
 
 import com.spbau.bibaev.software.design.messenger.EntryPoint;
+import com.spbau.bibaev.software.design.messenger.app.User;
 import com.spbau.bibaev.software.design.messenger.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,6 +21,9 @@ class ConnectionDialog extends JDialog {
   private final JTextField myAddressTextField;
   private final JTextField myPortTextField;
   private final JButton myOpenChatButton = new JButton("Open");
+  private final JLabel myErrorLabel = new JLabel("Wrong address");
+  private int myPortResult;
+  private InetAddress myAddressResult;
 
   ConnectionDialog(@NotNull Frame owner) throws HeadlessException {
     super(owner, "Connect", ModalityType.APPLICATION_MODAL);
@@ -42,15 +47,13 @@ class ConnectionDialog extends JDialog {
     });
 
     myOpenChatButton.addActionListener(e -> {
-      String address = myAddressTextField.getText();
-      int port = Integer.parseInt(myPortTextField.getText());
       try {
-        final InetAddress inetAddress = InetAddress.getByName(address);
-        final DialogWindow dialogWindow = new DialogWindow(inetAddress, port);
-        dialogWindow.setVisible(true);
+        String address = myAddressTextField.getText();
+        myAddressResult = InetAddress.getByName(address);
+        myPortResult = Integer.parseInt(myPortTextField.getText());
         dispose();
       } catch (UnknownHostException e1) {
-        e1.printStackTrace();
+        myErrorLabel.setVisible(true);
       }
     });
 
@@ -74,8 +77,10 @@ class ConnectionDialog extends JDialog {
     JPanel pane = new JPanel();
     pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
+    myErrorLabel.setVisible(false);
     pane.add(configPane);
     pane.add(myOpenChatButton);
+    pane.add(myErrorLabel);
     pane.setBorder(BorderFactory.createEmptyBorder(PADDING_SIZE, PADDING_SIZE, PADDING_SIZE, PADDING_SIZE));
 
     getContentPane().add(pane);
@@ -83,6 +88,28 @@ class ConnectionDialog extends JDialog {
     setLocationRelativeTo(null);
 
     pack();
+  }
+
+  @Nullable
+  public User showDialog() {
+    setVisible(true);
+    final int port = myPortResult;
+    final InetAddress address = myAddressResult;
+    if (port == -1 || address == null) {
+      return null;
+    }
+
+    return new User() {
+      @Override
+      public @NotNull InetAddress getAddress() {
+        return address;
+      }
+
+      @Override
+      public int getPort() {
+        return port;
+      }
+    };
   }
 
   private class MyPortInputValidator extends InputVerifier {
