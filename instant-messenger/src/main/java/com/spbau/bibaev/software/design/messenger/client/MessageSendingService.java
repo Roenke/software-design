@@ -5,6 +5,8 @@ import com.spbau.bibaev.software.design.messenger.app.Settings;
 import com.spbau.bibaev.software.design.messenger.common.AnswerCodes;
 import com.spbau.bibaev.software.design.messenger.ex.ProtocolException;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +19,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MessageSendingService implements Service {
+  private static final Logger LOG = LogManager.getLogger(MessageSendingService.class);
+
   private static final MessageSendingCallback EMPTY_CALLBACK = new MessageSendingCallback() {
     @Override
     public void onSuccess(@NotNull Message message) {
@@ -54,7 +58,9 @@ public class MessageSendingService implements Service {
       try {
         send();
         myCallback.onSuccess(myMessage);
+        LOG.info("Message to " + myMessage.getUser().getName() + " successfully delivered");
       } catch (IOException e) {
+        LOG.warn("Message sending failed", e);
         myCallback.onFail(myMessage, e);
       }
     }

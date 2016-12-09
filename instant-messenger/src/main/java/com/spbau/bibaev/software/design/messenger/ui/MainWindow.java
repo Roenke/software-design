@@ -76,9 +76,7 @@ public class MainWindow extends JFrame {
     pane.add(informationPanel, BorderLayout.NORTH);
     pane.add(buttonsPane, BorderLayout.CENTER);
 
-    getContentPane().
-
-        add(pane);
+    getContentPane().add(pane);
 
     pack();
   }
