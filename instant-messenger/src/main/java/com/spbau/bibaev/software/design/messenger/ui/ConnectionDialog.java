@@ -1,7 +1,6 @@
 package com.spbau.bibaev.software.design.messenger.ui;
 
 import com.spbau.bibaev.software.design.messenger.EntryPoint;
-import com.spbau.bibaev.software.design.messenger.client.Message;
 import com.spbau.bibaev.software.design.messenger.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,15 +14,14 @@ import java.net.UnknownHostException;
 /**
  * @author Vitaliy.Bibaev
  */
-class ConnectionDialog extends JFrame {
+class ConnectionDialog extends JDialog {
   private static final int PADDING_SIZE = 15;
   private final JTextField myAddressTextField;
   private final JTextField myPortTextField;
   private final JButton myOpenChatButton = new JButton("Open");
 
-  ConnectionDialog() throws HeadlessException {
-    super("Open dialog");
-
+  ConnectionDialog(@NotNull Frame owner) throws HeadlessException {
+    super(owner, "Connect", ModalityType.APPLICATION_MODAL);
     myAddressTextField = new JTextField("localhost", 15);
     myPortTextField = new JTextField(String.valueOf(EntryPoint.DEFAULT_PORT), 15);
 

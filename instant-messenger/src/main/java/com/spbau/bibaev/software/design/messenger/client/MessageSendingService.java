@@ -62,7 +62,7 @@ public class MessageSendingService implements Service {
     private void send() throws IOException {
       try (Socket socket = new Socket(myMessage.getUser().getAddress(), myMessage.getUser().getPort());
            DataInputStream in = new DataInputStream(socket.getInputStream());
-           DataOutputStream out = new DataOutputStream(socket.getOutputStream());) {
+           DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
 
         final byte[] data = myMessage.getData();
 

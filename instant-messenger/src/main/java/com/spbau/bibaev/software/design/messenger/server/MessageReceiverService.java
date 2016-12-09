@@ -58,7 +58,6 @@ public class MessageReceiverService implements Service {
             data = new byte[dataLength];
             IOUtils.readFully(in, data);
 
-
             out.writeInt(AnswerCodes.OK);
           } catch (IOException ignored) {
             continue;

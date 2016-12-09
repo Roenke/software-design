@@ -47,12 +47,12 @@ public class MainWindow extends JFrame {
     final JButton settingsButton = new JButton("Settings");
 
     sendMessageButton.addActionListener(e -> {
-      final ConnectionDialog dialog = new ConnectionDialog();
+      final ConnectionDialog dialog = new ConnectionDialog(MainWindow.this);
       dialog.setVisible(true);
     });
 
     settingsButton.addActionListener(e -> {
-      final SettingsWindow settingsWindow = new SettingsWindow();
+      final SettingsWindow settingsWindow = new SettingsWindow(MainWindow.this);
       settingsWindow.setVisible(true);
     });
 

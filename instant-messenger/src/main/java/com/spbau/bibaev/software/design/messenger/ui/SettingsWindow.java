@@ -2,20 +2,21 @@ package com.spbau.bibaev.software.design.messenger.ui;
 
 import com.spbau.bibaev.software.design.messenger.app.Settings;
 import com.spbau.bibaev.software.design.messenger.util.StringUtil;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-class SettingsWindow extends JFrame {
+class SettingsWindow extends JDialog {
   private static final int PADDING_SIZE = 15;
   private final JTextField myUsernameTextField;
   private final JTextField myPortTextField;
   private final JButton mySaveButton = new JButton("Save");
 
-  SettingsWindow() throws HeadlessException {
-    super("Settings");
+  SettingsWindow(@NotNull Frame owner) throws HeadlessException {
+    super(owner, "Settings", ModalityType.APPLICATION_MODAL);
 
     final Settings settings = Settings.getInstance();
     myUsernameTextField = new JTextField(settings.getName(), 12);
