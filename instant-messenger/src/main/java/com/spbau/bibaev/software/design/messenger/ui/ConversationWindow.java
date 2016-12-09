@@ -51,6 +51,7 @@ class ConversationWindow extends JFrame {
               @Override
               public void onSuccess(@NotNull Message message) {
                 showMessage(Settings.getInstance().getName(), message.getDate(), text);
+                myMessageTextField.setText("");
               }
 
               @Override
@@ -64,7 +65,6 @@ class ConversationWindow extends JFrame {
     pane.add(southPane, BorderLayout.SOUTH);
     getContentPane().add(pane);
     getRootPane().setDefaultButton(sendButton);
-    setLocationRelativeTo(null);
 
     pack();
   }

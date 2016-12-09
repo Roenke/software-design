@@ -89,6 +89,7 @@ public class MainWindow extends JFrame {
 
     return myOpenDialogs.computeIfAbsent(connection, x -> {
       final ConversationWindow conversationWindow = new ConversationWindow(x.myAddress, x.myPort);
+      conversationWindow.setLocationRelativeTo(this);
       conversationWindow.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosed(WindowEvent e) {

@@ -52,7 +52,7 @@ class SettingsDialog extends JDialog {
 
     getContentPane().add(pane);
 
-    setLocationRelativeTo(null);
+    setLocationRelativeTo(owner);
 
     pack();
   }
