@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class MainWindow extends JFrame {
   private final JLabel myInformationLabel = new JLabel();
-  private Map<MyConnection, DialogWindow> myOpenDialogs = new ConcurrentHashMap<>();
+  private Map<MyConnection, ConversationWindow> myOpenDialogs = new ConcurrentHashMap<>();
 
   public MainWindow() {
     super("Instant messenger");
@@ -33,7 +33,7 @@ public class MainWindow extends JFrame {
     receiverService.addListener(new ReceiverListener() {
       @Override
       public void messageReceived(@NotNull Message message) {
-        final DialogWindow dialog = getDialogWindow(message.getUser());
+        final ConversationWindow dialog = getDialogWindow(message.getUser());
         dialog.setVisible(true);
         dialog.pushMessage(message);
       }
@@ -61,11 +61,12 @@ public class MainWindow extends JFrame {
       }
     });
 
-    settingsButton.addActionListener(e ->
-
-    {
-      final SettingsWindow settingsWindow = new SettingsWindow(MainWindow.this);
-      settingsWindow.setVisible(true);
+    settingsButton.addActionListener(e -> {
+      final SettingsDialog settingsDialog = new SettingsDialog(MainWindow.this);
+      final String newName = settingsDialog.showDialog();
+      if (newName != null && !newName.trim().isEmpty()) {
+        Settings.getInstance().setName(newName);
+      }
     });
 
     buttonsPane.add(sendMessageButton);
@@ -83,18 +84,18 @@ public class MainWindow extends JFrame {
   }
 
   @NotNull
-  private DialogWindow getDialogWindow(@NotNull User user) {
+  private ConversationWindow getDialogWindow(@NotNull User user) {
     final MyConnection connection = new MyConnection(user);
 
     return myOpenDialogs.computeIfAbsent(connection, x -> {
-      final DialogWindow dialogWindow = new DialogWindow(x.myAddress, x.myPort);
-      dialogWindow.addWindowListener(new WindowAdapter() {
+      final ConversationWindow conversationWindow = new ConversationWindow(x.myAddress, x.myPort);
+      conversationWindow.addWindowListener(new WindowAdapter() {
         @Override
         public void windowClosed(WindowEvent e) {
           myOpenDialogs.remove(connection);
         }
       });
-      return dialogWindow;
+      return conversationWindow;
     });
   }
 

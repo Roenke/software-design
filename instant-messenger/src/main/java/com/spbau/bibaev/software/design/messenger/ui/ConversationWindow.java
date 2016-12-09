@@ -8,8 +8,6 @@ import com.spbau.bibaev.software.design.messenger.client.Message;
 import com.spbau.bibaev.software.design.messenger.client.MessageSendingCallback;
 import com.spbau.bibaev.software.design.messenger.client.MessageSendingService;
 import com.spbau.bibaev.software.design.messenger.client.TextMessage;
-import com.spbau.bibaev.software.design.messenger.server.MessageReceiverService;
-import com.spbau.bibaev.software.design.messenger.server.ReceiverListener;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -19,13 +17,13 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-class DialogWindow extends JFrame {
+class ConversationWindow extends JFrame {
   private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM hh:mm");
   private final JTextArea myTextArea = new JTextArea();
   private final JTextField myMessageTextField = new JTextField();
   private volatile NamedUser myUser;
 
-  DialogWindow(@NotNull InetAddress address, int port) throws HeadlessException {
+  ConversationWindow(@NotNull InetAddress address, int port) throws HeadlessException {
     super(String.format("%s: %d", address, port));
     myTextArea.setEditable(false);
     myMessageTextField.setToolTipText("Enter your message here");
