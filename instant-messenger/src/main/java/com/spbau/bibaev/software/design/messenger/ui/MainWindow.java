@@ -10,12 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.net.InetAddress;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MainWindow extends JFrame {
   private final JLabel myInformationLabel = new JLabel();
-  private Set<User> activeChats = new HashSet<>();
+  private Map<MyConnection, DialogWindow> myOpenDialogs = new ConcurrentHashMap<>();
 
   public MainWindow() {
     super("Instant messenger");
@@ -29,16 +33,17 @@ public class MainWindow extends JFrame {
     receiverService.addListener(new ReceiverListener() {
       @Override
       public void messageReceived(@NotNull Message message) {
-        if (!activeChats.contains(message.getUser())) {
-          final DialogWindow dialog = new DialogWindow(message);
-          dialog.setVisible(true);
-          activeChats.add(message.getUser());
-        }
+        final DialogWindow dialog = getDialogWindow(message.getUser());
+        dialog.setVisible(true);
+        dialog.pushMessage(message);
       }
     });
 
     JPanel informationPanel = new JPanel();
-    settings.addListener((setts, propertyName) -> updateInformation(setts));
+    settings.addListener((setts, propertyName) ->
+
+        updateInformation(setts));
+
     updateInformation(settings);
     informationPanel.add(myInformationLabel);
 
@@ -46,16 +51,19 @@ public class MainWindow extends JFrame {
     final JButton sendMessageButton = new JButton("Send message");
     final JButton settingsButton = new JButton("Settings");
 
-    sendMessageButton.addActionListener(e -> {
+    sendMessageButton.addActionListener(e ->
+
+    {
       final ConnectionDialog dialog = new ConnectionDialog(MainWindow.this);
       final User user = dialog.showDialog();
       if (user != null) {
-        final DialogWindow dialogWindow = new DialogWindow(user.getAddress(), user.getPort());
-        dialogWindow.setVisible(true);
+        getDialogWindow(user).setVisible(true);
       }
     });
 
-    settingsButton.addActionListener(e -> {
+    settingsButton.addActionListener(e ->
+
+    {
       final SettingsWindow settingsWindow = new SettingsWindow(MainWindow.this);
       settingsWindow.setVisible(true);
     });
@@ -67,9 +75,27 @@ public class MainWindow extends JFrame {
     pane.add(informationPanel, BorderLayout.NORTH);
     pane.add(buttonsPane, BorderLayout.CENTER);
 
-    getContentPane().add(pane);
+    getContentPane().
+
+        add(pane);
 
     pack();
+  }
+
+  @NotNull
+  private DialogWindow getDialogWindow(@NotNull User user) {
+    final MyConnection connection = new MyConnection(user);
+
+    return myOpenDialogs.computeIfAbsent(connection, x -> {
+      final DialogWindow dialogWindow = new DialogWindow(x.myAddress, x.myPort);
+      dialogWindow.addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosed(WindowEvent e) {
+          myOpenDialogs.remove(connection);
+        }
+      });
+      return dialogWindow;
+    });
   }
 
   private void updateInformation(@NotNull Settings settings) {
@@ -79,6 +105,27 @@ public class MainWindow extends JFrame {
       myInformationLabel.setText(info);
     } else {
       SwingUtilities.invokeLater(() -> updateInformation(settings));
+    }
+  }
+
+  private static class MyConnection {
+    private final InetAddress myAddress;
+    private final int myPort;
+
+    MyConnection(@NotNull User user) {
+      myAddress = user.getAddress();
+      myPort = user.getPort();
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(myAddress, myPort);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      return obj instanceof MyConnection &&
+          myAddress.equals(((MyConnection) obj).myAddress) && myPort == ((MyConnection) obj).myPort;
     }
   }
 }

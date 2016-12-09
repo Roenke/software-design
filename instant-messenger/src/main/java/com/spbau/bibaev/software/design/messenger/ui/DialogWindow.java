@@ -43,16 +43,6 @@ class DialogWindow extends JFrame {
     southPane.add(sendButton, BorderLayout.EAST);
     myUser = new UserImpl("unknown", address, port);
 
-    MessageReceiverService receiverService = Application.getInstance().getService(MessageReceiverService.class);
-    receiverService.addListener(new ReceiverListener() {
-      @Override
-      public void messageReceived(@NotNull Message message) {
-        if (myUser.equals(message.getUser())) {
-          addMessage(message);
-        }
-      }
-    });
-
     sendButton.addActionListener(e -> {
       final String text = myMessageTextField.getText();
       if (!text.trim().isEmpty()) {
@@ -81,12 +71,7 @@ class DialogWindow extends JFrame {
     pack();
   }
 
-  DialogWindow(@NotNull Message message) {
-    this(message.getUser().getAddress(), message.getUser().getPort());
-    addMessage(message);
-  }
-
-  private void addMessage(@NotNull Message message) {
+  void pushMessage(@NotNull Message message) {
     if (myUser != null && !myUser.equals(message.getUser())) {
       return;
     }
