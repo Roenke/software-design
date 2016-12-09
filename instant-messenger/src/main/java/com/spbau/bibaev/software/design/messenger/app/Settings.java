@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
+ * Represents global configuration of the application
+ *
  * @author Vitaliy.Bibaev
  */
 public class Settings {
@@ -22,15 +24,30 @@ public class Settings {
   private Settings() {
   }
 
+  /**
+   * Returns a name of the current user
+   *
+   * @return A name of the current user
+   */
   @NotNull
   public String getName() {
     return myName;
   }
 
+  /**
+   * Returns a port which listened for new messages
+   *
+   * @return A 16-bit port number
+   */
   public int getPort() {
     return myPort;
   }
 
+  /**
+   * Rename current username
+   *
+   * @param name A new name for current user
+   */
   public void setName(@NotNull String name) {
     if (!myName.equals(name)) {
       myName = name;
@@ -38,6 +55,11 @@ public class Settings {
     }
   }
 
+  /**
+   * Specify a new port for listening new connection
+   *
+   * @param port A 16-bit port number
+   */
   public void setPort(int port) {
     if (myPort != port) {
       myPort = port;
@@ -45,10 +67,20 @@ public class Settings {
     }
   }
 
+  /**
+   * Register a new listener for modification events
+   *
+   * @param listener A listener object
+   */
   public void addListener(@NotNull SettingsStateListener listener) {
     myListeners.add(listener);
   }
 
+  /**
+   * Returns instance of the {@link Settings}
+   *
+   * @return An instance
+   */
   public static Settings getInstance() {
     return Settings.Holder.INSTANCE;
   }

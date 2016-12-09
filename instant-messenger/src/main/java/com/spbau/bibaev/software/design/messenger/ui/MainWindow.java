@@ -17,10 +17,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * The main window of the application
+ */
 public class MainWindow extends JFrame {
   private final JLabel myInformationLabel = new JLabel();
-  private Map<MyConnection, ConversationWindow> myOpenDialogs = new ConcurrentHashMap<>();
+  private final Map<MyConnection, ConversationWindow> myOpenDialogs = new ConcurrentHashMap<>();
 
+  /**
+   * Constructs a new window
+   */
   public MainWindow() {
     super("Instant messenger");
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -39,7 +45,7 @@ public class MainWindow extends JFrame {
       }
     });
 
-    JPanel informationPanel = new JPanel();
+    final JPanel informationPanel = new JPanel();
     settings.addListener((setts, propertyName) ->
 
         updateInformation(setts));
@@ -47,7 +53,7 @@ public class MainWindow extends JFrame {
     updateInformation(settings);
     informationPanel.add(myInformationLabel);
 
-    JPanel buttonsPane = new JPanel(new GridLayout(2, 1));
+    final JPanel buttonsPane = new JPanel(new GridLayout(2, 1));
     final JButton sendMessageButton = new JButton("Send message");
     final JButton settingsButton = new JButton("Settings");
 

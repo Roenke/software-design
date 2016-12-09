@@ -14,6 +14,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
+ * A modal dialog for specification of address and port
+ *
  * @author Vitaliy.Bibaev
  */
 class ConnectionDialog extends JDialog {
@@ -25,17 +27,22 @@ class ConnectionDialog extends JDialog {
   private int myPortResult;
   private InetAddress myAddressResult;
 
-  ConnectionDialog(@NotNull Frame owner) throws HeadlessException {
+  /**
+   * Constructs a new instance of {@link ConnectionDialog}
+   *
+   * @param owner A parent of the dialog
+   */
+  ConnectionDialog(@NotNull Frame owner) {
     super(owner, "Connect", ModalityType.APPLICATION_MODAL);
     myAddressTextField = new JTextField("localhost", 15);
     myPortTextField = new JTextField(String.valueOf(EntryPoint.DEFAULT_PORT), 15);
 
     setDefaultCloseOperation(HIDE_ON_CLOSE);
-    JLabel usernameLabel = new JLabel("Address:  ");
-    JLabel portLabel = new JLabel("Port: ");
+    final JLabel usernameLabel = new JLabel("Address:  ");
+    final JLabel portLabel = new JLabel("Port: ");
 
-    JPanel configPane = new JPanel();
-    GroupLayout layout = new GroupLayout(configPane);
+    final JPanel configPane = new JPanel();
+    final GroupLayout layout = new GroupLayout(configPane);
     configPane.setLayout(layout);
 
     myPortTextField.setInputVerifier(new MyPortInputValidator());
@@ -48,7 +55,7 @@ class ConnectionDialog extends JDialog {
 
     myOpenChatButton.addActionListener(e -> {
       try {
-        String address = myAddressTextField.getText();
+        final String address = myAddressTextField.getText();
         myAddressResult = InetAddress.getByName(address);
         myPortResult = Integer.parseInt(myPortTextField.getText());
         dispose();
@@ -74,7 +81,7 @@ class ConnectionDialog extends JDialog {
             .addComponent(myPortTextField)));
 
     getRootPane().setDefaultButton(myOpenChatButton);
-    JPanel pane = new JPanel();
+    final JPanel pane = new JPanel();
     pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
     myErrorLabel.setVisible(false);
@@ -90,8 +97,13 @@ class ConnectionDialog extends JDialog {
     pack();
   }
 
+  /**
+   * Show dialog
+   *
+   * @return An {@link User} with specified address and port
+   */
   @Nullable
-  public User showDialog() {
+  User showDialog() {
     setVisible(true);
     final int port = myPortResult;
     final InetAddress address = myAddressResult;

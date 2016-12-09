@@ -18,6 +18,11 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * A service for sending messages
+ *
+ * @author Vitaliy.Bibaev
+ */
 public class MessageSendingService implements Service {
   private static final Logger LOG = LogManager.getLogger(MessageSendingService.class);
 
@@ -32,10 +37,22 @@ public class MessageSendingService implements Service {
   };
   private final ExecutorService myThreadPool;
 
+  /**
+   * Constructs a new instance of {@link MessageSendingService}
+   *
+   * @param threadCount A count of the threads for sending workers
+   */
   public MessageSendingService(int threadCount) {
     myThreadPool = Executors.newFixedThreadPool(threadCount);
   }
 
+  /**
+   * Send the {@code message} for other user
+   *
+   * @param fromName A name of sender
+   * @param message  A message
+   * @param callback A callback
+   */
   public void sendMessage(@NotNull String fromName,
                           @NotNull Message message,
                           @Nullable MessageSendingCallback callback) {
@@ -66,9 +83,9 @@ public class MessageSendingService implements Service {
     }
 
     private void send() throws IOException {
-      try (Socket socket = new Socket(myMessage.getUser().getAddress(), myMessage.getUser().getPort());
-           DataInputStream in = new DataInputStream(socket.getInputStream());
-           DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
+      try (final Socket socket = new Socket(myMessage.getUser().getAddress(), myMessage.getUser().getPort());
+           final DataInputStream in = new DataInputStream(socket.getInputStream());
+           final DataOutputStream out = new DataOutputStream(socket.getOutputStream())) {
 
         final byte[] data = myMessage.getData();
 

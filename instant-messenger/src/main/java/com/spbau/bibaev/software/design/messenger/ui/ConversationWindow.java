@@ -17,13 +17,24 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * A non-modal window for user chat
+ *
+ * @author Vitaliy.Bibaev
+ */
 class ConversationWindow extends JFrame {
   private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM hh:mm");
   private final JTextArea myTextArea = new JTextArea();
   private final JTextField myMessageTextField = new JTextField();
   private volatile NamedUser myUser;
 
-  ConversationWindow(@NotNull InetAddress address, int port) throws HeadlessException {
+  /**
+   * Constructs a new instance of the window
+   *
+   * @param address An address of the user
+   * @param port    A port which the user listening
+   */
+  ConversationWindow(@NotNull InetAddress address, int port) {
     super(String.format("%s: %d", address, port));
     myTextArea.setEditable(false);
     myMessageTextField.setToolTipText("Enter your message here");
@@ -31,20 +42,20 @@ class ConversationWindow extends JFrame {
     setDefaultCloseOperation(HIDE_ON_CLOSE);
     setPreferredSize(new Dimension(500, 500));
 
-    JPanel pane = new JPanel(new BorderLayout());
+    final JPanel pane = new JPanel(new BorderLayout());
     pane.add(myTextArea, BorderLayout.CENTER);
-    JPanel southPane = new JPanel(new BorderLayout());
+    final JPanel southPane = new JPanel(new BorderLayout());
     southPane.add(new JSeparator(JSeparator.HORIZONTAL));
     southPane.add(myMessageTextField, BorderLayout.CENTER);
 
-    JButton sendButton = new JButton("Send");
+    final JButton sendButton = new JButton("Send");
     southPane.add(sendButton, BorderLayout.EAST);
     myUser = new UserImpl("unknown", address, port);
 
     sendButton.addActionListener(e -> {
       final String text = myMessageTextField.getText();
       if (!text.trim().isEmpty()) {
-        Date date = new Date();
+        final Date date = new Date();
         final TextMessage message = new TextMessage(myUser, date, text);
         Application.getInstance().getService(MessageSendingService.class)
             .sendMessage(Settings.getInstance().getName(), message, new MessageSendingCallback() {
@@ -69,6 +80,11 @@ class ConversationWindow extends JFrame {
     pack();
   }
 
+  /**
+   * Add message to the list of messages
+   *
+   * @param message A message
+   */
   void pushMessage(@NotNull Message message) {
     if (myUser != null && !myUser.equals(message.getUser())) {
       return;
@@ -76,7 +92,7 @@ class ConversationWindow extends JFrame {
 
     myUser = message.getUser();
     if (message instanceof TextMessage) {
-      TextMessage textMessage = (TextMessage) message;
+      final TextMessage textMessage = (TextMessage) message;
       showMessage(myUser.getName(), textMessage.getDate(), textMessage.getText());
     } else {
       showMessage("messenger", new Date(), "unknown message type :(");
@@ -85,7 +101,7 @@ class ConversationWindow extends JFrame {
 
   private void showMessage(@NotNull String author, @NotNull Date date, @NotNull String message) {
     if (SwingUtilities.isEventDispatchThread()) {
-      String header = String.format("%s(%s): %n", author,
+      final String header = String.format("%s(%s): %n", author,
           DATE_FORMAT.format(date));
       myTextArea.append(header);
       myTextArea.append(String.format("%s%n", message));

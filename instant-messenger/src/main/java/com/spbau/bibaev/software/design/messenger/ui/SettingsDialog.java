@@ -7,24 +7,34 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Represents modal dialog for changing the name of the current user
+ *
+ * @author Vitaliy.Bibaev
+ */
 class SettingsDialog extends JDialog {
   private static final int PADDING_SIZE = 15;
   private final JTextField myUsernameTextField;
   private String myResult;
 
-  SettingsDialog(@NotNull Frame owner) throws HeadlessException {
+  /**
+   * Constructs a new instance of the settings dialog
+   *
+   * @param owner The owner of this dialog
+   */
+  SettingsDialog(@NotNull Frame owner) {
     super(owner, "Settings", ModalityType.APPLICATION_MODAL);
 
     final Settings settings = Settings.getInstance();
     myUsernameTextField = new JTextField(settings.getName(), 12);
     setDefaultCloseOperation(HIDE_ON_CLOSE);
-    JLabel usernameLabel = new JLabel("Username: ");
+    final JLabel usernameLabel = new JLabel("Username: ");
 
-    JPanel configPane = new JPanel();
-    GroupLayout layout = new GroupLayout(configPane);
+    final JPanel configPane = new JPanel();
+    final GroupLayout layout = new GroupLayout(configPane);
     configPane.setLayout(layout);
 
-    JButton saveButton = new JButton("Save");
+    final JButton saveButton = new JButton("Save");
     saveButton.addActionListener(e -> {
       myResult = myUsernameTextField.getText();
       dispose();
@@ -42,7 +52,7 @@ class SettingsDialog extends JDialog {
             .addComponent(myUsernameTextField)));
 
     getRootPane().setDefaultButton(saveButton);
-    JPanel pane = new JPanel();
+    final JPanel pane = new JPanel();
     pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
     pane.add(configPane);
@@ -57,6 +67,11 @@ class SettingsDialog extends JDialog {
     pack();
   }
 
+  /**
+   * Show dialog
+   *
+   * @return A new name
+   */
   @Nullable String showDialog() {
     setVisible(true);
     return myResult;

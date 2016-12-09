@@ -1,6 +1,10 @@
 package com.spbau.bibaev.software.design.messenger.common;
 
+/**
+ * Codes of notification other users when something went wrong with their messages
+ *
+ * @author Vitaliy.Bibaev
+ */
 public class AnswerCodes {
   public static final int OK = 0;
-  public static final int UNKNOWN_MESSAGE_TYPE = -1;
 }

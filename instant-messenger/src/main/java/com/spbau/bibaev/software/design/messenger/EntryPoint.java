@@ -11,8 +11,9 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
-import java.io.IOException;
-
+/**
+ * The entry point
+ */
 public class EntryPoint {
   public static final String DEFAULT_USER_NAME = "Bob";
   public static final int DEFAULT_PORT = 48982;
@@ -20,10 +21,15 @@ public class EntryPoint {
   private static final int SEND_THREAD_COUNT = 10;
   private static final int RECEIVE_THREAD_COUNT = 10;
 
+  /**
+   * A main method
+   *
+   * @param args Arguments of the command line
+   */
   public static void main(String[] args) {
-    ArgumentParser parser = createParser();
+    final ArgumentParser parser = createParser();
     try {
-      Namespace parseResult = parser.parseArgs(args);
+      final Namespace parseResult = parser.parseArgs(args);
       final String username = parseResult.get("username");
       final int port = parseResult.get("port");
 
@@ -44,7 +50,7 @@ public class EntryPoint {
         }
       });
 
-      MainWindow mainWindow = new MainWindow();
+      final MainWindow mainWindow = new MainWindow();
       mainWindow.setVisible(true);
 
     } catch (ArgumentParserException e) {
@@ -54,7 +60,7 @@ public class EntryPoint {
 
 
   private static ArgumentParser createParser() {
-    ArgumentParser parser = ArgumentParsers.newArgumentParser("client")
+    final ArgumentParser parser = ArgumentParsers.newArgumentParser("client")
         .description("Yet another p2p chat")
         .defaultHelp(true);
 

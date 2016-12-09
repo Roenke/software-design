@@ -24,6 +24,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Represents a service for obtaining messages from other users
+ *
+ * @author Vitaliy.Bibaev
+ */
 public class MessageReceiverService implements Service {
   private static final Logger LOG = LogManager.getLogger(MessageSendingService.class);
   private final ExecutorService myThreadPool;
@@ -31,10 +36,20 @@ public class MessageReceiverService implements Service {
   private final List<ReceiverListener> myListeners = new CopyOnWriteArrayList<>();
   private volatile ServerSocket myServerSocket;
 
+  /**
+   * Constructs a new instance of {@link MessageReceiverService}
+   *
+   * @param handlersThreadCount A count of the threads for sending workers
+   */
   public MessageReceiverService(int handlersThreadCount) {
     myThreadPool = Executors.newFixedThreadPool(handlersThreadCount);
   }
 
+  /**
+   * Start listen to new port for input connection
+   *
+   * @param port A 16-bit port number
+   */
   public void attach(int port) {
     try {
       if (myServerSocket != null) {
@@ -46,7 +61,7 @@ public class MessageReceiverService implements Service {
       new Thread(() -> {
         while (!socket.isClosed()) {
           try {
-            Socket clientSocket = socket.accept();
+            final Socket clientSocket = socket.accept();
             myThreadPool.execute(new MyConnectionHandler(clientSocket));
           } catch (IOException e) {
             LOG.info("socket closed");
@@ -58,6 +73,11 @@ public class MessageReceiverService implements Service {
     }
   }
 
+  /**
+   * Registers a listener for service events
+   *
+   * @param listener A listener
+   */
   public void addListener(@NotNull ReceiverListener listener) {
     myListeners.add(listener);
   }
@@ -77,15 +97,15 @@ public class MessageReceiverService implements Service {
     public void run() {
       final NamedUser user;
       final byte[] data;
-      try (Socket clientSocket = myClientSocket;
-           DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-           DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream())) {
+      try (final Socket clientSocket = myClientSocket;
+           final DataInputStream in = new DataInputStream(clientSocket.getInputStream());
+           final DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream())) {
 
         final InetAddress address = clientSocket.getInetAddress();
 
-        String userName = in.readUTF();
+        final String userName = in.readUTF();
         final int clientPort = in.readInt();
-        int dataLength = in.readInt();
+        final int dataLength = in.readInt();
 
         user = new UserImpl(userName, address, clientPort);
 
