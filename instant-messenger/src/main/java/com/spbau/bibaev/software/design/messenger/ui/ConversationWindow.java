@@ -86,16 +86,13 @@ class ConversationWindow extends JFrame {
    * @param message A message
    */
   void pushMessage(@NotNull Message message) {
-    if (myUser != null && !myUser.equals(message.getUser())) {
-      return;
-    }
-
     myUser = message.getUser();
+    setTitle(String.format("%s %s:%d", myUser.getName(), myUser.getAddress(), myUser.getPort()));
     if (message instanceof TextMessage) {
       final TextMessage textMessage = (TextMessage) message;
       showMessage(myUser.getName(), textMessage.getDate(), textMessage.getText());
     } else {
-      showMessage("messenger", new Date(), "unknown message type :(");
+      showMessage("messenger", new Date(), "unknown message type");
     }
   }
 
